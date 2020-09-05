@@ -15,9 +15,12 @@
         android:color="#0F000000" />
 
     <corners
+        android:radius="7dp" />
+    <!--
         android:bottomLeftRadius="15dp"
         android:bottomRightRadius="15dp"
         android:topLeftRadius="15dp"
-        android:topRightRadius="15dp" />
+        android:topRightRadius="15dp"
+    -->
 
 </shape>

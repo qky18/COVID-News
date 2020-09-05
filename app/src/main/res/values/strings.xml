@@ -4,5 +4,9 @@
     <string name="login">登录</string>
     <string name="login_user_hint">请输入用户名</string>
     <string name="login_psw_hint">请输入密码</string>
+    <!-- Title -->
+    <string name="title_home">首页</string>
+    <string name="title_dashboard">疫情数据</string>
+    <string name="title_scholar">知疫学者</string>
 
 </resources>

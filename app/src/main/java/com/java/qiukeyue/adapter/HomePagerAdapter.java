@@ -1,23 +1,20 @@
-package com.example.news.adapter;
-
-import android.os.Bundle;
-import android.view.View;
+package com.java.qiukeyue.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.news.fragment.NewsCollectionFragment;
+import com.java.qiukeyue.fragment.NewsCollectionFragment;
 
 // Since this(???) is an object collection, use a FragmentStatePagerAdapter,
 // and NOT a FragmentPagerAdapter.
-public class MainPagerAdapter extends FragmentStatePagerAdapter {
+public class HomePagerAdapter extends FragmentStatePagerAdapter {
     private final int PAGE_SIZE = 10;
     private String[] tabTitles;
 
 
-    public MainPagerAdapter(@NonNull FragmentManager fm, String[] tabTitles) {
+    public HomePagerAdapter(@NonNull FragmentManager fm, String[] tabTitles) {
         super(fm);
         this.tabTitles = tabTitles;
     }

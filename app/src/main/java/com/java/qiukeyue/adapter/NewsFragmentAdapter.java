@@ -1,16 +1,17 @@
-package com.example.news.adapter;
+package com.java.qiukeyue.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.news.R;
+import com.java.qiukeyue.R;
 
 public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapter.NewsInfoViewHolder> {
+    private final int NUM_SIZE = 10;
+
     @Override
     public NewsInfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -26,22 +27,20 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
     @Override
     //TODO: 20?
     public int getItemCount() {
-        return 6;
+        return NUM_SIZE;
     }
 
 
     class NewsInfoViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView mThumnail;
-        TextView mSource;
         TextView mTitle;
-        TextView mPreview;
+        TextView mSource;
+        TextView mDate;
         public NewsInfoViewHolder(View itemView) {
             super(itemView);
-            mThumnail = itemView.findViewById(R.id.news_thumbnail);
-            mSource = itemView.findViewById(R.id.news_source);
             mTitle = itemView.findViewById(R.id.news_title);
-            mPreview = itemView.findViewById(R.id.news_preview);
+            mSource = itemView.findViewById(R.id.news_source);
+            mDate = itemView.findViewById(R.id.news_date);
         }
     }
 }
