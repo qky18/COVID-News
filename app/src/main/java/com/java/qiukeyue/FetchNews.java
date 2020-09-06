@@ -23,7 +23,7 @@ public class FetchNews {
     private FetchNews(){
     }
 
-    static public List<News> fetch(String type) throws IOException, JSONException {
+    static public void fetch(String type) throws IOException, JSONException {
         String url = new String(String.format("https://covid-dashboard.aminer.cn/api/events/list?type=%s&page=%d&size=%d",type,1,20));
         Request.Builder builder = new Request.Builder()
                 .url(url)
@@ -45,15 +45,21 @@ public class FetchNews {
                 Log.e("FetchNews", "before convert: " + root.getString("data"));
                 JSONArray array = root.getJSONArray("data");
                 Gson gson = new Gson();
-                for(int i=0;i<array.length();i++){
-                    String singleNews=array.getJSONObject(i).toString();
+                for(int i = 0; i < array.length(); i++){
+                    String singleNews = array.getJSONObject(i).toString();
                     Log.e("FetchNews", "before convert: " + singleNews);
                     News news = gson.fromJson(singleNews, News.class);
                     Log.e("FetchNews", "after convert: " + news.getTitle());
+                    news.save();
                 }
-                return null;
             }
         }
-        return null;
+    }
+
+    static public void printNews(){
+        List<News> myNews = News.listAll(News.class);
+        for(News n: myNews){
+            Log.e("printNews", "after convert: " + n.getTitle() + n.getSeen());
+        }
     }
 }

@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try {
                     FetchNews.fetch("news");
+                    FetchNews.printNews();
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
