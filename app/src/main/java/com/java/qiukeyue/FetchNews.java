@@ -2,8 +2,10 @@ package com.java.qiukeyue;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.java.qiukeyue.bean.News;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,7 +23,7 @@ public class FetchNews {
     private FetchNews(){
     }
 
-    static public List<News> fetch(String type) throws IOException, JSONException {
+    static public void fetch(String type) throws IOException, JSONException {
         String url = new String(String.format("https://covid-dashboard.aminer.cn/api/events/list?type=%s&page=%d&size=%d",type,1,20));
         Request.Builder builder = new Request.Builder()
                 .url(url)
@@ -36,14 +38,28 @@ public class FetchNews {
         if(response.isSuccessful()){
             ResponseBody body = response.body();
             String json=body.string();
+
             Log.e("FetchNews", "json: " + json);
-            if(body != null){
+            if(json != null){
                 JSONObject root = new JSONObject(json);
-                Log.e("FetchNews", "before convert: " + root.getString(""));
-                List<News> collected = new ArrayList<>();
-                return collected;
+                Log.e("FetchNews", "before convert: " + root.getString("data"));
+                JSONArray array = root.getJSONArray("data");
+                Gson gson = new Gson();
+                for(int i = 0; i < array.length(); i++){
+                    String singleNews = array.getJSONObject(i).toString();
+                    Log.e("FetchNews", "before convert: " + singleNews);
+                    News news = gson.fromJson(singleNews, News.class);
+                    Log.e("FetchNews", "after convert: " + news.getTitle());
+                    news.save();
+                }
             }
         }
-        return null;
+    }
+
+    static public void printNews(){
+        List<News> myNews = News.listAll(News.class);
+        for(News n: myNews){
+            Log.e("printNews", "after convert: " + n.getTitle() + n.getSeen());
+        }
     }
 }
