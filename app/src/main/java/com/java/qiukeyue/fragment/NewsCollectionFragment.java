@@ -1,4 +1,4 @@
-package com.example.news.fragment;
+package com.java.qiukeyue.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.news.R;
-import com.example.news.adapter.NewsFragmentAdapter;
+import com.java.qiukeyue.R;
+import com.java.qiukeyue.adapter.NewsFragmentAdapter;
 
 // Instances of MainCollection class are fragments representing a single type of collection
 public class NewsCollectionFragment extends Fragment {

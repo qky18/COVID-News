@@ -1,4 +1,4 @@
-package com.example.news.adapter;
+package com.java.qiukeyue.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.news.R;
+import com.java.qiukeyue.R;
 
 public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapter.NewsInfoViewHolder> {
     @Override

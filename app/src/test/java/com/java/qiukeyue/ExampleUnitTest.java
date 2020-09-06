@@ -1,4 +1,4 @@
-package com.example.news;
+package com.java.qiukeyue;
 
 import org.junit.Test;
 
