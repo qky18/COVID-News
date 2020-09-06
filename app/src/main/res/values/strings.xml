@@ -11,5 +11,7 @@
     <string name="title_home">首页</string>
     <string name="title_dashboard">疫情数据</string>
     <string name="title_scholar">知疫学者</string>
+    <string name="title_kg">知识图谱</string>
+    <string name="title_user">我的</string>
 
 </resources>

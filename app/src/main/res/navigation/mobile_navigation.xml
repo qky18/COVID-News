@@ -18,8 +18,21 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_scholar"
         android:name="com.java.qiukeyue.ui.scholar.ScholarFragment"
         android:label="@string/title_scholar"
         tools:layout="@layout/fragment_scholar" />
+
+    <fragment
+        android:id="@+id/navigation_knowledge_graph"
+        android:name="com.java.qiukeyue.ui.kg.KGFragment"
+        android:label="@string/title_kg"
+        tools:layout="@layout/fragment_kg" />
+
+
+    <fragment
+        android:id="@+id/navigation_user"
+        android:name="com.java.qiukeyue.ui.user.UserFragment"
+        android:label="@string/title_user"
+        tools:layout="@layout/fragment_user" />
 </navigation>
