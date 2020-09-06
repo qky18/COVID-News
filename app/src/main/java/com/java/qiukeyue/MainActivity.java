@@ -14,12 +14,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONException;
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
+    private String[] tabTitles = new String[]{"News", "Paper"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         // init toolbar
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -32,11 +37,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // init navigation view
         initNavView();
+      
+        // back-end: fetch news
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FetchNews.fetch("news");
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+                //Manager m = new Manager();
+                //m.refresh("news");
+            }
+        }).start();
     }
 
     private void initNavView() {
-        // init nav view
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         // Passing each menu ID as a set of Ids because each

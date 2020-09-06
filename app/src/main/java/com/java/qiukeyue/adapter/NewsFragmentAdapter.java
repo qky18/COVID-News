@@ -11,7 +11,7 @@ import com.java.qiukeyue.R;
 
 public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapter.NewsInfoViewHolder> {
     private final int NUM_SIZE = 10;
-
+  
     @Override
     public NewsInfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -32,7 +32,6 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
 
 
     class NewsInfoViewHolder extends RecyclerView.ViewHolder {
-
         TextView mTitle;
         TextView mSource;
         TextView mDate;
