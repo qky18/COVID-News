@@ -1,8 +1,10 @@
 package com.java.qiukeyue.bean;
 
+import com.orm.SugarRecord;
+
 import java.util.List;
 
-public class News {
+public class News extends SugarRecord {
 
     /**
      * _id : 5f5488499fced0a24b8c27ad
@@ -25,7 +27,6 @@ public class News {
     private String category;
     private String content;
     private String date;
-    private String id;
     private String lang;
     private String source;
     private String time;
@@ -33,6 +34,7 @@ public class News {
     private String type;
     private java.util.List<EntitiesBean> entities;
     private java.util.List<String> urls;
+    private boolean seen=false;
 
     public String get_id() {
         return _id;
@@ -64,14 +66,6 @@ public class News {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getLang() {
@@ -128,6 +122,14 @@ public class News {
 
     public void setUrls(List<String> urls) {
         this.urls = urls;
+    }
+
+    public boolean getSeen() {
+        return seen;
+    }
+
+    public void setSeen(boolean seen) {
+        this.seen = seen;
     }
 
     public static class EntitiesBean {
