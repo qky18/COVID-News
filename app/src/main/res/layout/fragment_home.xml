@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorToolbar"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -26,15 +26,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/colorToolbar"
                 app:tabIndicatorColor="@android:color/white"
-                app:tabTextColor="@android:color/tab_indicator_text"
+                app:tabTextColor="@android:color/secondary_text_dark"
                 app:tabSelectedTextColor="@color/textColorPrimary"
                 app:tabMode="fixed"/>
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
+                android:layout_height="match_parent"
+                android:paddingRight="5dp"
+                android:background="@color/colorToolbar"
                 android:src="@drawable/ic_add"/>
         </LinearLayout>
 

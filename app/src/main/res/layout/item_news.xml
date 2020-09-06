@@ -27,7 +27,8 @@
                 android:ellipsize="end"
                 android:text="校长邱勇出席泰晤士高等教育2020年世界学术峰会并致辞"
                 android:textSize="17sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textColor="@color/textTitle"/>
 
             <TextView
                 android:id="@+id/news_source"

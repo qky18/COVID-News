@@ -20,4 +20,8 @@
         <item name="android:titleTextStyle">@color/textColorPrimary</item>
     </style>
 
+    <style name="SearchViewStyle" parent="android:Widget.Material.Light.SearchView">
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
 </resources>
