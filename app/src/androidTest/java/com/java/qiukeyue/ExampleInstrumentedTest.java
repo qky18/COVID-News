@@ -1,4 +1,4 @@
-package com.example.news;
+package com.java.qiukeyue;
 
 import android.content.Context;
 

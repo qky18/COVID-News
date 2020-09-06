@@ -1,12 +1,16 @@
-package com.example.news;
+package com.java.qiukeyue;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 
-import com.example.news.adapter.MainPagerAdapter;
+import com.java.qiukeyue.adapter.MainPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
+
+import org.json.JSONException;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     private String[] tabTitles = new String[]{"News", "Paper"};
@@ -16,6 +20,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FetchNews.fetch("news");
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+                //Manager m = new Manager();
+                //m.refresh("news");
+            }
+        }).start();
     }
 
     private void initView(){
