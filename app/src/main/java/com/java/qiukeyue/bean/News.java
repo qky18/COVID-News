@@ -34,7 +34,6 @@ public class News extends SugarRecord {
     private String type;
     private java.util.List<EntitiesBean> entities;
     private java.util.List<String> urls;
-    private boolean seen=false;
 
     public String get_id() {
         return _id;
@@ -122,14 +121,6 @@ public class News extends SugarRecord {
 
     public void setUrls(List<String> urls) {
         this.urls = urls;
-    }
-
-    public boolean getSeen() {
-        return seen;
-    }
-
-    public void setSeen(boolean seen) {
-        this.seen = seen;
     }
 
     public static class EntitiesBean {

@@ -1,6 +1,7 @@
 package com.java.qiukeyue;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,12 +15,19 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.java.qiukeyue.bean.News;
 
 import org.json.JSONException;
 import java.io.IOException;
+import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity {
     private String[] tabTitles = new String[]{"News", "Paper"};
+    private Observer<List<News>> observer;
+    private Manager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +52,27 @@ public class MainActivity extends AppCompatActivity {
         initNavView();
       
         // back-end: fetch news
-        new Thread(new Runnable() {
+        manager = new Manager();
+        Log.e("MainActivity","Manager available");
+        observer = new Observer<List<News>>() {
             @Override
-            public void run() {
-                try {
-                    FetchNews.fetch("news");
-                    FetchNews.printNews();
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-                //Manager m = new Manager();
-                //m.refresh("news");
+            public void onSubscribe(Disposable d) {
+                Log.e("MainActivity","observer subscribed");
             }
-        }).start();
+            @Override
+            public void onNext(List<News> news) {
+                Log.e("MainActivity","getList");
+            }
+            @Override
+            public void onError(Throwable e) {
+            }
+            @Override
+            public void onComplete() {
+                Log.e("MainActivity","Complete");
+            }
+        };
+        Log.e("MainActivity","Observer available");
+        Manager.refresh_n("news",true,observer);
     }
 
     private void initNavView() {
