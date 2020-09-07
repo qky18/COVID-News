@@ -45,10 +45,8 @@ public class Manager {
                 if(fetch==null){
                     fetch = new Fetch();
                 }
-                List<News> result=null;
+                List<News> result;
                 int total = fetch.getTotal();
-                int backwardIndex_n = fetch.checkCurrent_n();
-                Log.e("Manager","total:"+total+" backwardIndex:"+backwardIndex_n);
                 if(total == -1){
                     Log.e("Manager","Error on getting total");
                 }
@@ -57,20 +55,62 @@ public class Manager {
                     fetch.setCurrent_n(total);//拉取的是最新的
                 }
                 else{//上拉加载更多
+                    int backwardIndex_n = fetch.checkCurrent_n();
                     sub = total-backwardIndex_n+20;//拉取后面20条
                     fetch.setCurrent_n(backwardIndex_n-20);
                 }
                 if(sub % 20 == 0){//正好是整数页
-                    result = fetch.fetchNews(type,1+sub/20,0,20);
+                    result = fetch.fetchNews(type,1+sub/20,0,20,null,20);
                 }
                 else{
-                    result = fetch.fetchNews(type,1+sub/20,sub%20,20);
-                    result.addAll(fetch.fetchNews(type,2+sub%20,0,sub%20));
+                    result = fetch.fetchNews(type,1+sub/20,sub%20,20,null,20);
+                    result.addAll(fetch.fetchNews(type,2+sub%20,0,sub%20,null,20));
                 }
                 for(News n:result){
                     Log.e("Manager","fetched: "+n.getTitle());
                 }
                 e.onNext(result);
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())//Observable在哪个线程（不能放在主线程）
+                .observeOn(AndroidSchedulers.mainThread())//Observer在哪个线程
+                .subscribe(observer);
+    }
+    public static void search_n(final String keyword, final boolean newSearch, Observer observer){//newSearch为true则为新的查询，否则只是之前的查询的上拉查看更多
+        Log.e("Manager","refresh");
+        Observable.create(new ObservableOnSubscribe<List<News>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<News>> e) throws Exception{
+                /*
+                //计算要调用哪条
+                if(fetch==null){
+                    fetch = new Fetch();
+                }
+                List<News> result=null;
+                int total = fetch.getTotal();
+                int sub=0;
+                if(!newSearch){
+                    int SearchIndex_n = fetch.checkCurrent_n();
+                    sub = total-SearchIndex_n+20;//拉取后面20条
+                    int pageIndex = 1+sub/20;
+                    int startNum = sub%20;
+                    int needNum = 20;//需要找到20个
+                    while(SearchIndex_n < total && needNum > 0){
+
+                    }
+                }
+                for(News n:result){
+                    Log.e("Manager","fetched: "+n.getTitle());
+                }
+                e.onNext(result);
+                e.onComplete();
+
+                 */
+                List<News> news=fetch.fetchNews("news",1,0,20,keyword,20);
+                for(int i = 2; i <= 50; i++){
+                    news.addAll(fetch.fetchNews("news",i,0,20,keyword,20));
+                }
+                e.onNext(news);
                 e.onComplete();
             }
         }).subscribeOn(Schedulers.io())//Observable在哪个线程（不能放在主线程）
