@@ -10,7 +10,6 @@ import com.java.qiukeyue.fragment.NewsCollectionFragment;
 // Since this(???) is an object collection, use a FragmentStatePagerAdapter,
 // and NOT a FragmentPagerAdapter.
 public class HomePagerAdapter extends FragmentStatePagerAdapter {
-    private final int PAGE_SIZE = 10;
     private String[] tabTitles;
 
 
@@ -28,10 +27,6 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int i) {
         Fragment fragment = new NewsCollectionFragment();
-        //Bundle args = new Bundle();
-        // Our object is just an integer :-P
-        //args.putInt(NewsCollectionFragment.ARG_OBJECT, i + 1);
-        //fragment.setArguments(args);
         return fragment;
     }
 
