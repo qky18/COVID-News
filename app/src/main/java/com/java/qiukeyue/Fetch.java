@@ -31,6 +31,9 @@ public class Fetch {
     public int checkCurrent_n(){
         return backwardIndex_n;
     }
+    public void setCurrent_n(int current_n){
+        backwardIndex_n = current_n;
+    }
     public int getTotal() throws IOException, JSONException {
         String url = new String(String.format("https://covid-dashboard.aminer.cn/api/events/list?type=%s&page=%d&size=%d","news",1,20));
         Request.Builder builder = new Request.Builder().url(url).get();

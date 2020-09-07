@@ -36,7 +36,7 @@ public class Manager {
     Manager() {
     }
     @SuppressLint("CheckResult")
-    public static void refresh_n(final String type, boolean getNew, Observer observer){
+    public static void refresh_n(final String type, final boolean getNew, Observer observer){
         Log.e("Manager","refresh");
         Observable.create(new ObservableOnSubscribe<List<News>>() {
             @Override
@@ -45,14 +45,21 @@ public class Manager {
                 if(fetch==null){
                     fetch = new Fetch();
                 }
+                List<News> result=null;
                 int total = fetch.getTotal();
                 int backwardIndex_n = fetch.checkCurrent_n();
                 Log.e("Manager","total:"+total+" backwardIndex:"+backwardIndex_n);
                 if(total == -1){
                     Log.e("Manager","Error on getting total");
                 }
-                int sub = total-backwardIndex_n;
-                List<News> result = new ArrayList<>();
+                int sub = 0;//与最新一条的差距
+                if(getNew){//下拉刷新，拉取最新20条
+                    fetch.setCurrent_n(total);//拉取的是最新的
+                }
+                else{//上拉加载更多
+                    sub = total-backwardIndex_n+20;//拉取后面20条
+                    fetch.setCurrent_n(backwardIndex_n-20);
+                }
                 if(sub % 20 == 0){//正好是整数页
                     result = fetch.fetchNews(type,1+sub/20,0,20);
                 }
