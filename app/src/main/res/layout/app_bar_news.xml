@@ -12,21 +12,12 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/news_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="@string/app_name"
-            app:navigationIcon="@drawable/ic_back"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/search_view"
-                android:layout_gravity="right|end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                app:queryHint="@string/query_hint"
-                android:theme="@style/SearchViewStyle"/>
 
         </androidx.appcompat.widget.Toolbar>
 
