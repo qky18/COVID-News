@@ -37,7 +37,7 @@ public class FetchNews {
         Response response = call.execute();
         if(response.isSuccessful()){
             ResponseBody body = response.body();
-            String json=body.string();
+            String json = body.string();
 
             Log.e("FetchNews", "json: " + json);
             if(json != null){
@@ -50,7 +50,7 @@ public class FetchNews {
                     Log.e("FetchNews", "before convert: " + singleNews);
                     News news = gson.fromJson(singleNews, News.class);
                     Log.e("FetchNews", "after convert: " + news.getTitle());
-                    news.save();
+                    //news.save();
                 }
             }
         }
