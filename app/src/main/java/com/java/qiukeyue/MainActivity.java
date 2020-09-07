@@ -7,7 +7,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -21,11 +21,11 @@ import com.java.qiukeyue.bean.News;
 import java.util.List;
 
 import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity {
-    private Observer<List<News>> observer;
     private Manager manager;
+
+    FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,29 +38,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initNewsManager() {
-
-        // back-end: fetch news
+        // back-end manager: for fetching news
         manager = new Manager();
         Log.e("MainActivity","Manager available");
-        observer = new Observer<List<News>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                Log.e("MainActivity","observer subscribed");
-            }
-            @Override
-            public void onNext(List<News> news) {
-                Log.e("MainActivity","getList");
-            }
-            @Override
-            public void onError(Throwable e) {
-            }
-            @Override
-            public void onComplete() {
-                Log.e("MainActivity","Complete");
-            }
-        };
-        Log.e("MainActivity","Observer available");
-        Manager.refresh_n("news",true, observer);
     }
 
     private void initSearchbar() {
@@ -98,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, fragAppBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        this.fm = getSupportFragmentManager();
     }
 
 }

@@ -18,14 +18,17 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
         void onNewsSelected(News news);
     }
 
-    private final int NUM_SIZE;
     private List<News> newsList;
     private OnNewsSelectedListener mListener;
 
-    public NewsFragmentAdapter(final int NUM_SIZE, List<News> newsList, OnNewsSelectedListener listener){
-        this.NUM_SIZE = NUM_SIZE;
+    public NewsFragmentAdapter(List<News> newsList, OnNewsSelectedListener listener){
         this.newsList = newsList;
         this.mListener = listener;
+    }
+
+    public void setNewsList(List<News> newsList) {
+        this.newsList = newsList;
+        this.notifyDataSetChanged();
     }
 
     @NonNull
@@ -43,7 +46,7 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
 
     @Override
     public int getItemCount() {
-        return NUM_SIZE;
+        return newsList.size();
     }
 
 
