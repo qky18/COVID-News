@@ -76,7 +76,7 @@ public class Manager {
                 .observeOn(AndroidSchedulers.mainThread())//Observer在哪个线程
                 .subscribe(observer);
     }
-    public static void search_n(final String keyword, final boolean newSearch, Observer observer){//newSearch为true则为新的查询，否则只是之前的查询的上拉查看更多
+    public static void search_n(final String keyword, Observer observer){//newSearch为true则为新的查询，否则只是之前的查询的上拉查看更多
         Log.e("Manager","refresh");
         Observable.create(new ObservableOnSubscribe<List<News>>() {
             @Override
@@ -106,10 +106,18 @@ public class Manager {
                 e.onComplete();
 
                  */
+                if(fetch==null){
+                    fetch = new Fetch();
+                }
                 List<News> news=fetch.fetchNews("news",1,0,20,keyword,20);
-                for(int i = 2; i <= 50; i++){
+                for(int i = 2; i <= 25; i++){
                     news.addAll(fetch.fetchNews("news",i,0,20,keyword,20));
                 }
+
+                for(News n: news){
+                    Log.e("Search",n.getTitle());
+                }
+
                 e.onNext(news);
                 e.onComplete();
             }

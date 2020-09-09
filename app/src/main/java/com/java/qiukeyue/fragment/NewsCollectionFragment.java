@@ -12,15 +12,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.java.qiukeyue.MainActivity;
 import com.java.qiukeyue.Manager;
 import com.java.qiukeyue.NewsViewActivity;
 import com.java.qiukeyue.R;
 import com.java.qiukeyue.adapter.NewsFragmentAdapter;
 import com.java.qiukeyue.bean.News;
 import com.orm.SugarContext;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,8 +37,8 @@ public class NewsCollectionFragment extends Fragment implements
     private Observer<List<News>> observer = null;
     private List<News> newsList = new LinkedList<>();
     private NewsFragmentAdapter mAdapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    boolean isLoading = false;
+    private RefreshLayout refreshLayout;
+    boolean isLoadingMore = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -58,14 +61,26 @@ public class NewsCollectionFragment extends Fragment implements
     }
 
     private void initSwipeRefresh(View rootView) {
-        swipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        refreshLayout = rootView.findViewById(R.id.swipe_refresh);
+        refreshLayout.setRefreshHeader(new ClassicsHeader(this.getContext()));
+        refreshLayout.setRefreshFooter(new ClassicsFooter(this.getContext()));
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(RefreshLayout refreshlayout) {
                 Log.e("newsCollection", "onRefresh: ");
                 // This method performs the actual data-refresh operation.
                 // The method calls setRefreshing(false) when it's finished.
+                isLoadingMore = false;
                 Manager.refresh_n("news", true, observer);
+                //refreshlayout.finishRefresh();//传入false表示刷新失败
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                isLoadingMore = true;
+                Manager.refresh_n("news", false, observer);
+                //refreshlayout.finishLoadMore();//传入false表示加载失败
             }
         });
     }
@@ -81,63 +96,36 @@ public class NewsCollectionFragment extends Fragment implements
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new NewsFragmentAdapter(newsList, this);
         recyclerView.setAdapter(mAdapter);
-
-        // Set scroll listener
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                Log.d("test", "StateChanged = " + newState);
-
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                Log.d("test", "onScrolled");
-
-                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-                if (lastVisibleItemPosition == mAdapter.getItemCount()) {
-                    Log.d("test", "loading executed");
-
-                    boolean isRefreshing = swipeRefreshLayout.isRefreshing();
-                    if (isRefreshing) {
-                        mAdapter.notifyItemRemoved(mAdapter.getItemCount());
-                        return;
-                    }
-                    if (!isLoading) {
-                        isLoading = true;
-                        Manager.refresh_n("news", false, observer);
-                    }
-                }
-            }
-        });
     }
 
     private void initObserver(boolean getNew) {
         observer = new Observer<List<News>>() {
             @Override
             public void onSubscribe(Disposable d) {
-                Log.e("MainActivity","observer subscribed");
+                Log.e("NewsCollectionFrag","observer subscribed");
             }
             @Override
             public void onNext(List<News> news) {
-                Log.e("MainActivity","getList");
-                if(swipeRefreshLayout != null){
-                    swipeRefreshLayout.setRefreshing(false);
+                Log.e("NewsCollectionFrag","getList");
+                if(refreshLayout != null){
+                    if(isLoadingMore){
+                        refreshLayout.finishLoadMore();
+                        mAdapter.addNewsList(news);
+                    } else{
+                        refreshLayout.finishRefresh();
+                        mAdapter.setNewsList(news);
+                    }
                 }
-                mAdapter.setNewsList(news);
-                isLoading = false;
             }
             @Override
             public void onError(Throwable e) {
             }
             @Override
             public void onComplete() {
-                Log.e("MainActivity","Complete");
+                Log.e("NewsCollectionFrag","Complete");
             }
         };
-        Log.e("MainActivity","Observer available");
+        Log.e("NewsCollection","Observer available");
         Manager.refresh_n("news", getNew, observer);
     }
 
@@ -149,7 +137,6 @@ public class NewsCollectionFragment extends Fragment implements
         for(News single : n){
             Log.e("Selected",single.getTitle());
         }
-
 
         // Go to the details page for the selected patient
         Intent intent = new Intent(getActivity(), NewsViewActivity.class);
