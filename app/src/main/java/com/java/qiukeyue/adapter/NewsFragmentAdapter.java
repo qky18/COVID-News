@@ -31,6 +31,12 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
         this.notifyDataSetChanged();
     }
 
+    public void addNewsList(List<News> news) {
+        this.newsList.addAll(news);
+        this.notifyDataSetChanged();
+    }
+
+
     @NonNull
     @Override
     public NewsInfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
