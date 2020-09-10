@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.LongSerializationPolicy;
 import com.java.qiukeyue.bean.CovidData;
+import com.java.qiukeyue.bean.Entity;
 import com.java.qiukeyue.bean.News;
 
 import org.json.JSONArray;
@@ -163,6 +164,38 @@ public class Fetch {
                 }
                 return result;
             }
+        }
+        return null;
+    }
+
+    public List<Entity> fetchEntity(String queryName) throws IOException, JSONException {
+        String url = new String(String.format("https://innovaapi.aminer.cn/covid/api/v1/pneumonia/entityquery?entity=%s",queryName));
+        Request.Builder builder = new Request.Builder()
+                .url(url)
+                .get();
+        Request request = builder.build();
+        Call call = new OkHttpClient().newCall(request);
+        Response response = call.execute();
+        if(response.isSuccessful()){
+            List<Entity> result = new ArrayList<>();
+            ResponseBody body = response.body();
+            String json = body.string();
+            if(json != null){
+                JSONObject root = new JSONObject(json);
+                JSONArray array = root.getJSONArray("data");
+                Gson gson = new Gson();
+                int endNum = 10;
+                if(array.length() < endNum){
+                    endNum = array.length();
+                }
+                for(int i = 0; i < endNum; i++){
+                    String singleEntity = array.getJSONObject(i).toString();
+                    Entity entity = gson.fromJson(singleEntity, Entity.class);
+                    //Log.e("FetchNews", "after convert: " + news.getTitle());
+                    result.add(entity);
+                }
+            }
+            return result;
         }
         return null;
     }
