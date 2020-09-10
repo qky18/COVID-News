@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.util.Log;
 
 
+import com.java.qiukeyue.bean.CovidData;
 import com.java.qiukeyue.bean.News;
 import com.google.gson.Gson;
 
@@ -119,6 +120,26 @@ public class Manager {
                 }
 
                 e.onNext(news);
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())//Observable在哪个线程（不能放在主线程）
+                .observeOn(AndroidSchedulers.mainThread())//Observer在哪个线程
+                .subscribe(observer);
+    }
+    public static void get_covid_data(Observer<List<CovidData>> observer) throws IOException, JSONException {
+        Observable.create(new ObservableOnSubscribe<List<CovidData>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<CovidData>> e) throws Exception{
+                if(fetch==null){
+                    fetch = new Fetch();
+                }
+                List<CovidData> province = fetch.fetchCovidData(true);
+                List<CovidData> country = fetch.fetchCovidData(true);
+                for(CovidData cd: province){
+                    Log.e("Manager","cd-cured: "+cd.getCured());
+                }
+                e.onNext(province);
+                e.onNext(country);
                 e.onComplete();
             }
         }).subscribeOn(Schedulers.io())//Observable在哪个线程（不能放在主线程）
