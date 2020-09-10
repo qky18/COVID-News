@@ -172,7 +172,8 @@ public class Fetch {
         return null;
     }
 
-    public List<Entity> fetchEntity(String queryName) throws IOException, JSONException {
+    public List<Entity> fetchEntity(String queryName, boolean onlyOne) throws IOException, JSONException {
+        //onlyOne：用于在一个实体的relation中通过点击精准跳转到另一个实体
         String url = new String(String.format("https://innovaapi.aminer.cn/covid/api/v1/pneumonia/entityquery?entity=%s",queryName));
         Request.Builder builder = new Request.Builder()
                 .url(url)
@@ -188,6 +189,12 @@ public class Fetch {
                 JSONObject root = new JSONObject(json);
                 JSONArray array = root.getJSONArray("data");
                 Gson gson = new Gson();
+                if(onlyOne){
+                    String singleEntity = array.getJSONObject(0).toString();
+                    Entity entity = gson.fromJson(singleEntity, Entity.class);
+                    result.add(entity);
+                    return result;
+                }
                 int endNum = 10;
                 if(array.length() < endNum){
                     endNum = array.length();
