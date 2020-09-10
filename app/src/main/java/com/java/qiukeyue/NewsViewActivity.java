@@ -20,6 +20,7 @@ public class NewsViewActivity extends AppCompatActivity {
 
         title = getIntent().getStringExtra("title");
         content = getIntent().getStringExtra("content");
+
         initToolbar();
         initView();
     }
@@ -27,21 +28,13 @@ public class NewsViewActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.news_toolbar);
         setSupportActionBar(toolbar);
-
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        /*
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                NewsViewActivity.this.finish();
             }
         });
-
-         */
-
-
-        Log.e("NewsView", "click listener set");
-
     }
 
     private void initView() {
