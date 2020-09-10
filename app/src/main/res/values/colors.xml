@@ -14,4 +14,9 @@
     <color name="catArrangeTextBgColor">#AAE8E8E8</color>
     <color name="catArrangeDelTextBgColor">#ffffff</color>
 
+    <color name="covidConfirmed">@android:color/holo_blue_dark</color>
+    <color name="covidSuspected">@android:color/holo_orange_dark</color>
+    <color name="covidDeath">@android:color/holo_red_dark</color>
+    <color name="covidCured">@android:color/holo_green_dark</color>
+
 </resources>

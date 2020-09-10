@@ -71,7 +71,7 @@ public class ChartFragment extends Fragment {
 
         initView();
         initObserver();
-        //initSwipeRefresh();
+        initSwipeRefresh();
 
         return rootView;
     }
@@ -94,7 +94,7 @@ public class ChartFragment extends Fragment {
 
         previewChart.setViewportChangeListener(new ViewportListener());
 
-        previewX(true);
+        previewX(false);
     }
 
     private void initObserver() {
@@ -115,6 +115,8 @@ public class ChartFragment extends Fragment {
                 generateData(covidDataList);
                 chart.setColumnChartData(data);
                 previewChart.setColumnChartData(previewData);
+                previewX(false);
+                refreshLayout.setRefreshing(false);
             }
             @Override
             public void onError(Throwable e) {
@@ -123,16 +125,20 @@ public class ChartFragment extends Fragment {
             public void onComplete() {
             }
         };
-        Log.e("NewsCollection","Observer available");
         Manager.get_covid_data(observer, TAG.equals("China"));
     }
 
+    private float getValue(int value){
+        return value > 1 ? (float) Math.log10(value) : value;
+    }
+
     private void generateData(List<CovidData> covidDataList) {
+
         List<Integer> color = new ArrayList<>();
-        color.add(Color.parseColor("#009BDB"));
-        color.add(Color.parseColor("#009BDB"));
-        color.add(Color.parseColor("#009BDB"));
-        color.add(Color.parseColor("#009BDB"));
+        color.add(ChartUtils.COLOR_BLUE);
+        color.add(ChartUtils.COLOR_ORANGE);
+        color.add(ChartUtils.COLOR_RED);
+        color.add(ChartUtils.COLOR_GREEN);
 
         // All columns
         int numColumns = covidDataList.size();
@@ -145,19 +151,16 @@ public class ChartFragment extends Fragment {
             values = new ArrayList<>();
             axisXValues.add(new AxisValue(i).setLabel(data.getName()));
                 // sub columns(4): confirmed,
-                values.add(new SubcolumnValue(data.getConfirmed(), ChartUtils.pickColor()));
-                values.add(new SubcolumnValue(data.getSuspected(), ChartUtils.pickColor()));
-                values.add(new SubcolumnValue(data.getDead(), ChartUtils.pickColor()));
-                values.add(new SubcolumnValue(data.getCured(), ChartUtils.pickColor()));
+                values.add(new SubcolumnValue(getValue(data.getConfirmed()), color.get(0)).setLabel("确诊:" + data.getConfirmed()));
+                values.add(new SubcolumnValue(getValue(data.getSuspected()), color.get(1)).setLabel("疑似:" + data.getSuspected()));
+                values.add(new SubcolumnValue(getValue(data.getDead()), color.get(2)).setLabel("死亡:" + data.getDead()));
+                values.add(new SubcolumnValue(getValue(data.getCured()), color.get(3)).setLabel("治愈:" + data.getCured()));
 
-            columns.add(new Column(values));
+            columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
         }
 
         // init vertical data
         data = new ColumnChartData(columns);
-        // init X, Y axis
-        data.setAxisXBottom(new Axis(axisXValues));
-        data.setAxisYLeft(new Axis().setHasLines(true));
 
         // prepare preview data, is better to use separate deep copy for preview chart.
         // set color to grey to make preview area more visible.
@@ -167,6 +170,12 @@ public class ChartFragment extends Fragment {
                 value.setColor(ChartUtils.DEFAULT_DARKEN_COLOR);
             }
         }
+        previewData.setAxisXBottom(new Axis(axisXValues));
+        previewData.setAxisYLeft(new Axis().setHasLines(true).setName("人数"));
+
+        // init X, Y axis
+        data.setAxisXBottom(new Axis(axisXValues).setHasTiltedLabels(TAG.equals("World")).setTextColor(Color.BLACK));
+        data.setAxisYLeft(new Axis().setHasLines(true).setName("人数(log)").setTextColor(Color.BLACK));
     }
 
     private void generateDefaultData() {
@@ -202,8 +211,8 @@ public class ChartFragment extends Fragment {
     }
 
     private void previewX(boolean animate) {
-        Viewport tempViewport = new Viewport(chart.getMaximumViewport());
-        float dx = tempViewport.width() / 4;
+        Viewport tempViewport = new Viewport(-0.7f, chart.getMaximumViewport().height()*1.25f, TAG.equals("China") ? 7 : 1, 0);
+        float dx = tempViewport.width() / (TAG.equals("China") ? 4 : 6);
         tempViewport.inset(dx, 0);
         if (animate) {
             previewChart.setCurrentViewportWithAnimation(tempViewport);
@@ -211,6 +220,16 @@ public class ChartFragment extends Fragment {
             previewChart.setCurrentViewport(tempViewport);
         }
         previewChart.setZoomType(ZoomType.HORIZONTAL);
+    }
+
+    private void previewXY() {
+        // Better to not modify viewport of any chart directly so create a copy.
+        Viewport tempViewport = new Viewport(-0.7f, chart.getMaximumViewport().height()*1.25f, TAG.equals("China") ? 7 : 1, 0);
+        // Make temp viewport smaller.
+        float dx = tempViewport.width() / 4;
+        float dy = tempViewport.height() / 4;
+        tempViewport.inset(dx, dy);
+        previewChart.setCurrentViewportWithAnimation(tempViewport);
     }
 
     /**
