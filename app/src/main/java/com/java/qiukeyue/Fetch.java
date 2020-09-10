@@ -118,7 +118,7 @@ public class Fetch {
         }
         return null;
     }
-
+    /*
     public List<CovidData> fetchCovidData(boolean inChina) throws IOException, JSONException {
         Request.Builder builder = new Request.Builder()
                 .url("https://covid-dashboard.aminer.cn/api/dist/epidemic.json")
@@ -131,16 +131,20 @@ public class Fetch {
             List<CovidData> result = new ArrayList<>();
             ResponseBody body = response.body();
             String json = body.string();
+            Log.e("Fetch","json:"+json);
             JSONObject root = new JSONObject(json);
             if(inChina){
                 for(String p: this.province){
+                    Log.e("Fetch",p);
                     String all_data = root.getJSONObject(p).getString("data");
                     int index = all_data.length()-3;
                     while(all_data.charAt(index) != '['){
                         index--;
                     }
-                    String today_data = all_data.substring(index+1,all_data.length()-2);
-                    String[] split_data = today_data.split(",");
+                    //String today_data = all_data.substring(index+1,all_data.length()-2);
+                    //Log.e("Fetch","today_data:"+today_data);
+                    //String[] split_data = today_data.split(",");
+                    String[] split_data = all_data.substring(index+1,all_data.length()-2).split(",");
                     if(split_data.length != 7){
                         Log.e("Fetch","get wrong covid data!");
                         return null;
@@ -171,6 +175,119 @@ public class Fetch {
         }
         return null;
     }
+
+     */
+    public List<CovidData> fetchCovidData(boolean inChina) throws IOException, JSONException {
+        Request.Builder builder = new Request.Builder()
+                .url("https://covid-dashboard.aminer.cn/api/dist/epidemic.json")
+                .get();
+        Request request = builder.build();
+        Call call = new OkHttpClient().newCall(request);
+        Response response = call.execute();
+        if(response.isSuccessful()){
+            List<CovidData> result = new ArrayList<>();
+            String json = response.body().string();
+            if(inChina){
+                for(String p: this.province){
+                    Log.e("Fetch",p);
+                    int endIndex=json.indexOf("]]}",json.indexOf(p));
+                    int index = endIndex-3;
+                    while(json.charAt(index) != '[' && index >= 0){
+                        index--;
+                        if(index<0){
+                            Log.e("Fetch","aaaaa");
+                        }
+                    }
+                    //String today_data = all_data.substring(index+1,all_data.length()-2);
+                    //Log.e("Fetch","today_data:"+today_data);
+                    //String[] split_data = today_data.split(",");
+                    String[] split_data = json.substring(index+1,endIndex).split(",");
+                    Log.e("Fetch",json.substring(index+1,endIndex));
+                    if(split_data.length != 7){
+                        Log.e("Fetch","get wrong covid data!");
+                        return null;
+                    }
+                    //Log.e("Fetch","result adding...");
+                    int confirmed; int suspected; int cured; int dead;
+                    if(split_data[0].equals("null")){
+                        confirmed=0;
+                    }
+                    else{
+                        confirmed=Integer.parseInt(split_data[0]);
+                    }
+                    if(split_data[1].equals("null")){
+                        suspected=0;
+                    }
+                    else{
+                        suspected=Integer.parseInt(split_data[1]);
+                    }
+                    if(split_data[2].equals("null")){
+                        cured=0;
+                    }
+                    else{
+                        cured=Integer.parseInt(split_data[2]);
+                    }
+                    if(split_data[3].equals("null")){
+                        dead=0;
+                    }
+                    else{
+                        dead=Integer.parseInt(split_data[3]);
+                    }
+                    result.add(new CovidData(true, p.substring(6),confirmed,suspected,cured,dead));
+                    //Log.e("Fetch","result added");
+                }
+                return result;
+            }
+            else{
+                for(String p: this.country){
+                    Log.e("Fetch",p);
+                    int endIndex=json.indexOf("]]}",json.indexOf(p));
+                    int index = endIndex-3;
+                    while(json.charAt(index) != '['){
+                        index--;
+                    }
+                    //String today_data = all_data.substring(index+1,all_data.length()-2);
+                    //Log.e("Fetch","today_data:"+today_data);
+                    //String[] split_data = today_data.split(",");
+                    String[] split_data = json.substring(index+1,endIndex).split(",");
+                    Log.e("Fetch",json.substring(index+1,endIndex));
+                    if(split_data.length != 7){
+                        Log.e("Fetch","get wrong covid data!");
+                        return null;
+                    }
+                    int confirmed; int suspected; int cured; int dead;
+                    if(split_data[0].equals("null")){
+                        confirmed=0;
+                    }
+                    else{
+                        confirmed=Integer.parseInt(split_data[0]);
+                    }
+                    if(split_data[1].equals("null")){
+                        suspected=0;
+                    }
+                    else{
+                        suspected=Integer.parseInt(split_data[1]);
+                    }
+                    if(split_data[2].equals("null")){
+                        cured=0;
+                    }
+                    else{
+                        cured=Integer.parseInt(split_data[2]);
+                    }
+                    if(split_data[3].equals("null")){
+                        dead=0;
+                    }
+                    else{
+                        dead=Integer.parseInt(split_data[3]);
+                    }
+                    result.add(new CovidData(false, p,confirmed,suspected,cured,dead));
+                }
+                return result;
+            }
+        }
+        return null;
+    }
+
 
     public List<Entity> fetchEntity(String queryName, boolean onlyOne) throws IOException, JSONException {
         //onlyOne：用于在一个实体的relation中通过点击精准跳转到另一个实体

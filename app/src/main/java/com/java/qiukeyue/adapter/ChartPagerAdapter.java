@@ -18,9 +18,8 @@ public class ChartPagerAdapter extends FragmentPagerAdapter {
         super(fm);
         this.tabTitles = category;
         this.fragments = new ArrayList<>();
-        for(String title: tabTitles){
-            this.fragments.add(new ChartFragment(title));
-        }
+        assert tabTitles.size() > 0;
+        this.fragments.add(new ChartFragment(tabTitles.get(0)));
     }
 
     @Override
@@ -31,12 +30,20 @@ public class ChartPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int i) {
-        return fragments.get(i);
+        /*
+        while(fragments.size() <= i){
+            fragments.add(new ChartFragment(tabTitles.get(fragments.size())));
+        }
+
+         */
+        return fragments.get(0);
     }
 
     @Override
     public int getCount() {
-        return tabTitles.size();
+        return 1;
+
+        //return tabTitles.size();
     }
 
 }
