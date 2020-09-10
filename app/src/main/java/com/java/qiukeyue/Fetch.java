@@ -202,6 +202,7 @@ public class Fetch {
                 for(int i = 0; i < endNum; i++){
                     String singleEntity = array.getJSONObject(i).toString();
                     Entity entity = gson.fromJson(singleEntity, Entity.class);
+                    entity.trimRelations();  //relation至多保留10个
                     //Log.e("FetchNews", "after convert: " + news.getTitle());
                     result.add(entity);
                 }

@@ -58,6 +58,12 @@ public class Entity {
         this.img = img;
     }
 
+    public void trimRelations(){
+        if(abstractInfo.COVID.relations.size() > 10){
+            abstractInfo.COVID.relations = abstractInfo.COVID.relations.subList(0,10);
+        }
+    }
+
     public static class AbstractInfoBean {
         /**
          * enwiki :
