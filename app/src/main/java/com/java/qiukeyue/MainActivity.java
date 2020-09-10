@@ -16,12 +16,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.java.qiukeyue.bean.News;
-
-import java.util.List;
-
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 mSearchView.setIconified(true);
                 Intent intent = new Intent(MainActivity.this, NewsSearchedActivity.class);
                 intent.putExtra("keyword", s);
-                startActivity(intent);
+                startActivityForResult(intent, RESULT_OK);
                 return true;
             }
 
@@ -57,21 +51,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
     }
 
     private void initNavView() {
-        // mid navigation
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-
         // bottom navigation
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
