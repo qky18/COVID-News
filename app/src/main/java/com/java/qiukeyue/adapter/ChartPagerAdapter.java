@@ -1,5 +1,7 @@
 package com.java.qiukeyue.adapter;
 
+import android.view.MotionEvent;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;

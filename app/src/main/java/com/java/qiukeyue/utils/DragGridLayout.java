@@ -60,7 +60,7 @@ public class DragGridLayout extends GridLayout {
         tv.setGravity(Gravity.CENTER);
         if(!isRemain){
             tv.setTextColor(0xFF9c9393);
-            tv.setBackgroundResource(R.drawable.textview_unselect_border);
+            //tv.setBackgroundResource(R.drawable.textview_unselect_border);
         }
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.width = getResources().getDisplayMetrics().widthPixels / 4 - margin * 2;

@@ -1,4 +1,5 @@
 package com.java.qiukeyue.fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import io.reactivex.disposables.Disposable;
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.listener.ViewportChangeListener;
 import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
 import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.SubcolumnValue;
@@ -63,16 +65,18 @@ public class ChartFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_chart, container, false);
+        refreshLayout = rootView.findViewById(R.id.swipe_refresh);
+        chart = rootView.findViewById(R.id.chart);
+        previewChart = rootView.findViewById(R.id.chart_preview);
 
-        initView(rootView);
+        initView();
         initObserver();
-        initSwipeRefresh(rootView);
+        //initSwipeRefresh();
 
         return rootView;
     }
 
-    private void initSwipeRefresh(View rootView) {
-        refreshLayout = rootView.findViewById(R.id.swipe_refresh);
+    private void initSwipeRefresh() {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -81,23 +85,16 @@ public class ChartFragment extends Fragment {
         });
     }
 
-    private void initView(View rootView) {
-        chart = rootView.findViewById(R.id.chart);
-        previewChart = (PreviewColumnChartView) rootView.findViewById(R.id.chart_preview);
-
-        // Generate data for previewed chart and copy of that data for preview chart.
-        generateDefaultData();
-        chart.setColumnChartData(data);
+    private void initView() {
 
         // Disable zoom/scroll for previewed chart, visible chart ranges depends on preview chart viewport so
         // zoom/scroll is unnecessary.
         chart.setZoomEnabled(false);
         chart.setScrollEnabled(false);
 
-        previewChart.setColumnChartData(previewData);
         previewChart.setViewportChangeListener(new ViewportListener());
 
-        previewX(false);
+        previewX(true);
     }
 
     private void initObserver() {
@@ -113,6 +110,11 @@ public class ChartFragment extends Fragment {
                 for(CovidData data: covidDataList){
                     Log.e("Chart", data.getName());
                 }
+
+                // Generate data for previewed chart and copy of that data for preview chart.
+                generateData(covidDataList);
+                chart.setColumnChartData(data);
+                previewChart.setColumnChartData(previewData);
             }
             @Override
             public void onError(Throwable e) {
@@ -125,13 +127,57 @@ public class ChartFragment extends Fragment {
         Manager.get_covid_data(observer, TAG.equals("China"));
     }
 
+    private void generateData(List<CovidData> covidDataList) {
+        List<Integer> color = new ArrayList<>();
+        color.add(Color.parseColor("#009BDB"));
+        color.add(Color.parseColor("#009BDB"));
+        color.add(Color.parseColor("#009BDB"));
+        color.add(Color.parseColor("#009BDB"));
+
+        // All columns
+        int numColumns = covidDataList.size();
+        List<Column> columns = new ArrayList<>();
+        // X, Y axis values
+        List<AxisValue> axisXValues = new ArrayList<>();
+        List<SubcolumnValue> values;
+        for (int i=0; i<numColumns; i++) {
+            CovidData data = covidDataList.get(i);
+            values = new ArrayList<>();
+            axisXValues.add(new AxisValue(i).setLabel(data.getName()));
+                // sub columns(4): confirmed,
+                values.add(new SubcolumnValue(data.getConfirmed(), ChartUtils.pickColor()));
+                values.add(new SubcolumnValue(data.getSuspected(), ChartUtils.pickColor()));
+                values.add(new SubcolumnValue(data.getDead(), ChartUtils.pickColor()));
+                values.add(new SubcolumnValue(data.getCured(), ChartUtils.pickColor()));
+
+            columns.add(new Column(values));
+        }
+
+        // init vertical data
+        data = new ColumnChartData(columns);
+        // init X, Y axis
+        data.setAxisXBottom(new Axis(axisXValues));
+        data.setAxisYLeft(new Axis().setHasLines(true));
+
+        // prepare preview data, is better to use separate deep copy for preview chart.
+        // set color to grey to make preview area more visible.
+        previewData = new ColumnChartData(data);
+        for (Column column : previewData.getColumns()) {
+            for (SubcolumnValue value : column.getValues()) {
+                value.setColor(ChartUtils.DEFAULT_DARKEN_COLOR);
+            }
+        }
+    }
+
     private void generateDefaultData() {
         int numSubcolumns = 1;
         int numColumns = 50;
+        // All columns
         List<Column> columns = new ArrayList<>();
+        // X, Y axis values
+        List<AxisValue> axisXValues = new ArrayList<>();
         List<SubcolumnValue> values;
         for (int i = 0; i < numColumns; ++i) {
-
             values = new ArrayList<>();
             for (int j = 0; j < numSubcolumns; ++j) {
                 values.add(new SubcolumnValue((float) Math.random() * 50f + 5, ChartUtils.pickColor()));
@@ -141,7 +187,7 @@ public class ChartFragment extends Fragment {
         }
 
         data = new ColumnChartData(columns);
-        data.setAxisXTop(new Axis());
+        data.setAxisXBottom(new Axis());
         data.setAxisYLeft(new Axis().setHasLines(true));
 
         // prepare preview data, is better to use separate deep copy for preview chart.
