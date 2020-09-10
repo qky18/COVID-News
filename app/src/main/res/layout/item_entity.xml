@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="4dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="12dp"
+        android:background="@drawable/card_rectangle">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/entity_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="病毒"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/primary_text_light"/>
+
+            <TextView
+                android:id="@+id/entity_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_below="@+id/entity_label"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/entity_img"
+                android:layout_marginTop="5dp"
+                android:text="病毒是一种个体微小，结构简单，只含一种核酸（DNA或RNA），必须在活细胞内寄生并以复制方式增殖的非细胞型生物。"
+                android:textSize="12sp"
+                android:textColor="@android:color/secondary_text_light"/>
+
+            <ImageView
+                android:id="@+id/entity_img"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/default_virus"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

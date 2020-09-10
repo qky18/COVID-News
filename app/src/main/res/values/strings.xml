@@ -14,5 +14,7 @@
     <string name="title_kg">知识图谱</string>
     <string name="title_user">我的</string>
     <string name="query_hint">请输入新闻关键词</string>
+    <string name="title_search_kg">COKG-19</string>
+    <string name="intro_search_kg">大规模、结构化新冠知识图谱(COKG-19)，包含了505个概念、393个属性、26282个实例和32352个知识三元组，覆盖了医疗、健康、物资、防控、科研和人物等。</string>
 
 </resources>
