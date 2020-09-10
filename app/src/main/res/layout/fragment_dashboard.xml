@@ -33,7 +33,7 @@
                 app:tabMode="fixed"/>
         </LinearLayout>
 
-        <androidx.viewpager.widget.ViewPager
+        <com.java.qiukeyue.utils.ViewPagerNoSlide
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"

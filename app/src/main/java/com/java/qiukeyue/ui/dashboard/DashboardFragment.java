@@ -47,17 +47,20 @@ public class DashboardFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        return inflater.inflate(R.layout.fragment_dashboard, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+
         // init Tab view
-        TabLayout tabLayout = root.findViewById(R.id.tab_layout);
-        ViewPager viewPager = root.findViewById(R.id.view_pager);
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        ViewPager viewPager = view.findViewById(R.id.view_pager);
 
         // bind: fragment -> viewPager -> tabLayout
         assert getFragmentManager() != null;
         viewPager.setAdapter(new ChartPagerAdapter(getFragmentManager(), category));
         tabLayout.setupWithViewPager(viewPager);
-
-        return root;
     }
 
 }
