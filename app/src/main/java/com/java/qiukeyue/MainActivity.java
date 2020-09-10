@@ -21,11 +21,10 @@ import com.java.qiukeyue.bean.News;
 import java.util.List;
 
 import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity {
-    private Manager manager;
-
-    FragmentManager fm;
+    private Observer observer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,25 +33,53 @@ public class MainActivity extends AppCompatActivity {
 
         initSearchbar();
         initNavView();
-        initNewsManager();
+        initObserver();
     }
 
-    private void initNewsManager() {
+    private void initObserver() {
         // back-end manager: for fetching news
-        manager = new Manager();
-        Log.e("MainActivity","Manager available");
+        observer = new Observer<List<News>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                Log.e("MainActivity","observer subscribed");
+            }
+            @Override
+            public void onNext(List<News> news) {
+                Log.e("MainActivity","getList");
+                for(News n: news){
+                    Log.e("MainActivity", n.getTitle());
+                }
+            }
+            @Override
+            public void onError(Throwable e) {
+            }
+            @Override
+            public void onComplete() {
+                Log.e("MainActivity","Complete");
+            }
+        };
+        Log.e("MainActivity","Observer available");
+        Manager.search_n(null, observer);
     }
 
     private void initSearchbar() {
         Toolbar mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         SearchView mSearchView = findViewById(R.id.search_view);
-        SearchView.SearchAutoComplete mSearchAutoComplete = mSearchView.findViewById(R.id.search_src_text);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                // TODO: submit query text & go to next page
+                Log.e("Debug", "TextSubmit : " + s);
+                Manager.search_n(s, observer);
+                return false;
+            }
 
-        //设置触发查询的最少字符数（默认2个字符才会触发查询）
-        //mSearchAutoComplete.setThreshold(1);
-        //mSearchView.setSuggestionsAdapter(new CursorAdapter(MainActivity.this, R.layout.item_layout, cursor, new String[]{"name"}, new int[]{R.id.text1}));
-
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
     private void initNavView() {
@@ -78,8 +105,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, fragAppBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-
-        this.fm = getSupportFragmentManager();
     }
 
 }

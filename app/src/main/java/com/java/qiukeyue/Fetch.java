@@ -68,7 +68,6 @@ public class Fetch {
         Request.Builder builder = new Request.Builder()
                 .url(url)
                 .get();
-
         Request request = builder.build();
         Call call = new OkHttpClient().newCall(request);
         Response response = call.execute();
@@ -76,7 +75,6 @@ public class Fetch {
             ResponseBody body = response.body();
             String json = body.string();
             //Log.e("FetchNews", "json: " + json);
-
             List<News> result=new ArrayList<>();
             if(json != null){
                 JSONObject root = new JSONObject(json);
@@ -94,6 +92,8 @@ public class Fetch {
                     //Log.e("FetchNews", "before convert: " + singleNews2);
                     News news = gson.fromJson(singleNews2, News.class);
                     //Log.e("FetchNews", "after convert: " + news.getTitle());
+
+
                     if(keyword == null){
                         result.add(news);
                     }
@@ -109,6 +109,10 @@ public class Fetch {
                     }
                 }
                 //setSearchIndex_n(total-pageIndex*20);
+
+                if(keyword!=null){
+                    Log.e("Fetch","check: "+result.size());
+                }
             }
             return result;
         }
