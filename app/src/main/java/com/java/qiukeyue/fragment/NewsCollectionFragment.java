@@ -34,6 +34,7 @@ import io.reactivex.disposables.Disposable;
 // Instances of HomeFragment class are fragments representing a single type of collection
 public class NewsCollectionFragment extends Fragment implements
         NewsFragmentAdapter.OnNewsSelectedListener {
+    private String tab;
     private Observer<List<News>> observer = null;
     private List<News> newsList = new LinkedList<>();
     private NewsFragmentAdapter mAdapter;
@@ -44,6 +45,7 @@ public class NewsCollectionFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         SugarContext.init(getContext());
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,

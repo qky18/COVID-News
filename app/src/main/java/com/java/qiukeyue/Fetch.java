@@ -111,7 +111,7 @@ public class Fetch {
                 //setSearchIndex_n(total-pageIndex*20);
 
                 if(keyword!=null){
-                    Log.e("Fetch","check: "+result.size());
+                    Log.e("Fetch","page: "+pageIndex+"; check: "+result.size());
                 }
             }
             return result;

@@ -1,5 +1,6 @@
 package com.java.qiukeyue;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -7,7 +8,6 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -24,7 +24,6 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity {
-    private Observer observer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,46 +32,23 @@ public class MainActivity extends AppCompatActivity {
 
         initSearchbar();
         initNavView();
-        initObserver();
-    }
-
-    private void initObserver() {
-        // back-end manager: for fetching news
-        observer = new Observer<List<News>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                Log.e("MainActivity","observer subscribed");
-            }
-            @Override
-            public void onNext(List<News> news) {
-                Log.e("MainActivity","getList");
-                for(News n: news){
-                    Log.e("MainActivity", n.getTitle());
-                }
-            }
-            @Override
-            public void onError(Throwable e) {
-            }
-            @Override
-            public void onComplete() {
-                Log.e("MainActivity","Complete");
-            }
-        };
-        Log.e("MainActivity","Observer available");
-        Manager.search_n(null, observer);
     }
 
     private void initSearchbar() {
         Toolbar mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        SearchView mSearchView = findViewById(R.id.search_view);
+
+        final SearchView mSearchView = findViewById(R.id.search_view);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                // TODO: submit query text & go to next page
+                // submit query text & go to next page
                 Log.e("Debug", "TextSubmit : " + s);
-                Manager.search_n(s, observer);
-                return false;
+                mSearchView.setIconified(true);
+                Intent intent = new Intent(MainActivity.this, NewsSearchedActivity.class);
+                intent.putExtra("keyword", s);
+                startActivity(intent);
+                return true;
             }
 
             @Override
@@ -80,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
     }
 
     private void initNavView() {

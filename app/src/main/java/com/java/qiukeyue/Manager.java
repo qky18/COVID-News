@@ -111,7 +111,7 @@ public class Manager {
                     fetch = new Fetch();
                 }
                 List<News> news=fetch.fetchNews("news",1,0,20,keyword,20);
-                for(int i = 2; i <= 25; i++){
+                for(int i = 2; i <= 10; i++){
                     news.addAll(fetch.fetchNews("news",i,0,20,keyword,20));
                 }
 
