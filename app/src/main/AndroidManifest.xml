@@ -9,7 +9,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_nine"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -25,24 +25,11 @@
         <activity android:name=".NewsSearchedActivity"></activity>
         <activity android:name=".NewsViewActivity"></activity>
         <activity android:name=".CategoryActivity"></activity>
+        <activity android:name=".ScholarViewActivity"></activity>
         <activity android:name=".EntitySearchedActivity"></activity>
         <activity android:name=".EntityViewActivity"></activity>
         <activity android:name=".NewsOfflineActivity"></activity>
-
-        <!--
-        <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:noHistory="true"
-            android:launchMode="singleTask" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tencent你的AppId" />
-            </intent-filter>
-        </activity>
-        -->
-
+        <activity android:name=".NewsClusterActivity"></activity>
         <meta-data
             android:name="DATABASE"
             android:value="news.db" />

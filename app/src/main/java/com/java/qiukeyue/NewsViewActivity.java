@@ -57,10 +57,10 @@ public class NewsViewActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.share_wx:
-                        ShareNews.shareWeChatFriend(getApplicationContext(), title, content.substring(5));
+                        ShareNews.shareWeChatFriend(getApplicationContext(), title);
                         break;
                     case R.id.share_qq:
-                        ShareNews.shareQQFriend(getApplicationContext(), title, content.substring(5));
+                        ShareNews.shareQQFriend(getApplicationContext(), title);
                         break;
                     default:
                         break;
@@ -82,6 +82,7 @@ public class NewsViewActivity extends AppCompatActivity {
                 finish();
             }
         });
+        toolbar.setTitle("新闻详情");
     }
 
     private void initView() {

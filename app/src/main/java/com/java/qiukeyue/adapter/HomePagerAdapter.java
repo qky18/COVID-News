@@ -1,14 +1,11 @@
 package com.java.qiukeyue.adapter;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.Observer;
 
 import com.java.qiukeyue.fragment.NewsCollectionFragment;
-import com.java.qiukeyue.utils.TabViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +36,13 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
         return category.size();
     }
 
-
     public void setCategory(List<String> s) {
         this.category = s;
+        notifyDataSetChanged();
+    }
+
+    public void setDelCategory(List<String> s) {
+        this.delCategory = s;
         notifyDataSetChanged();
     }
 
@@ -50,10 +51,6 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
     }
 
     public ArrayList<String> getDelCategory() {
-        ArrayList<String> delCategory = new ArrayList<>();
-        delCategory.add("news");
-        delCategory.add("paper");
-        delCategory.removeAll(category);
-        return delCategory;
+        return new ArrayList<>(delCategory);
     }
 }

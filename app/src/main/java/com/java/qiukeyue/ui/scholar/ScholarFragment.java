@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,36 +12,37 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
+import com.java.qiukeyue.MainActivity;
 import com.java.qiukeyue.R;
+import com.java.qiukeyue.adapter.HomePagerAdapter;
+import com.java.qiukeyue.adapter.ScholarPagerAdapter;
 import com.orzangleli.radar.XRadarView;
 
-public class ScholarFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.Arrays;
 
-    private ScholarViewModel scholarViewModel;
+public class ScholarFragment extends Fragment {
+    private ScholarPagerAdapter scholarPagerAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_scholar, container, false);
-        //XRadarView xRadarView = root.findViewById(R.id.xradar_view);
-        //String[] titles = new String[]{"击杀","金钱","防御","魔法","物理","助攻","生存"};
-        //double[] percents = new double[]{1.0, 0.46,0.63,0.75,0.5,0.9,0.26};
-
-        //xRadarView.setTitles(titles);
-        //xRadarView.setPercents(percents);
-
-        /*
-        final TextView textView = root.findViewById(R.id.text_scholar);
-        scholarViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-
-         */
-
-
+        initView(root);
         return root;
+    }
+
+    private void initView(View view){
+        // init Tab view
+        TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+        ViewPager viewPager = view.findViewById(R.id.view_pager);
+
+        // bind: fragment -> viewPager -> tabLayout
+        String[] category = new String[]{"高关注学者", "追忆学者"};
+        scholarPagerAdapter = new ScholarPagerAdapter(getFragmentManager(), new ArrayList<>(Arrays.asList(category)));
+        viewPager.setAdapter(scholarPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 }

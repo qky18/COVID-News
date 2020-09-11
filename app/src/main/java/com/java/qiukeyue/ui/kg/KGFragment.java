@@ -30,6 +30,7 @@ public class KGFragment extends Fragment {
             public boolean onQueryTextSubmit(String s) {
                 // submit query text & go to next page
                 Log.e("Debug", "TextSubmit : " + s);
+                mSearchView.setIconified(true);
                 Intent intent = new Intent(getActivity(), EntitySearchedActivity.class);
                 intent.putExtra("keyword", s);
                 startActivity(intent);

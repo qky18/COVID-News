@@ -1,8 +1,8 @@
 package com.java.qiukeyue.bean;
 
-import java.util.List;
+import java.io.Serializable;
 
-public class Researcher {
+public class Researcher implements Serializable {
 
     /**
      * aff : {}
@@ -31,10 +31,8 @@ public class Researcher {
     private String name_zh;
     private ProfileBean profile;
     private boolean is_passedaway;
-    private java.util.List<String> tags;
-    private java.util.List<Integer> tags_score;
 
-    public static class IndicesBean{
+    public static class IndicesBean implements Serializable{
         private double activity;
         private int citations;
         private double diversity;
@@ -117,7 +115,7 @@ public class Researcher {
             this.sociability = sociability;
         }
     }
-    public static class ProfileBean{
+    public static class ProfileBean implements Serializable{
         private String address;
         private String affiliation;
         private String bio;
@@ -255,21 +253,5 @@ public class Researcher {
 
     public void setIs_passedaway(boolean is_passedaway) {
         this.is_passedaway = is_passedaway;
-    }
-
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public List<Integer> getTags_score() {
-        return tags_score;
-    }
-
-    public void setTags_score(List<Integer> tags_score) {
-        this.tags_score = tags_score;
     }
 }

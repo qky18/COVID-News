@@ -120,21 +120,6 @@
                     android:text="2.17"
                     android:textSize="12sp"
                     android:textStyle="bold" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="9dp"
-                    android:text="Diversity: "
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="#18BAF4"/>
-                <TextView
-                    android:id="@+id/scholar_diversity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="4.26"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
             </LinearLayout>
             <TextView
                 android:id="@+id/scholar_position"
@@ -143,8 +128,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_below="@+id/scholar_indices2"
                 android:layout_marginTop="3dp"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="中国工程院院士、主任、组长"
                 android:textSize="10sp"/>
             <TextView
@@ -154,8 +137,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_below="@+id/scholar_position"
                 android:layout_marginTop="3dp"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="国家呼吸系统疾病临床医学研究中心/国家卫健委/广州呼吸疾病研究所"
                 android:textSize="10sp"/>
         </RelativeLayout>

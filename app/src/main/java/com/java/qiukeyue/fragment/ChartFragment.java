@@ -16,6 +16,7 @@ import com.java.qiukeyue.R;
 import com.java.qiukeyue.bean.CovidData;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -108,13 +109,14 @@ public class ChartFragment extends Fragment {
             }
             @Override
             public void onNext(List<CovidData> covidDataList) {
-                //generateDefaultData();
-                //chart.setColumnChartData(data);
-                for(CovidData data: covidDataList){
-                    Log.e("Chart", data.getName());
-                }
-
                 // Generate data for previewed chart and copy of that data for preview chart.
+                covidDataList.sort(new Comparator<CovidData>() {
+                    @Override
+                    public int compare(CovidData o1, CovidData o2) {
+                        // descending order
+                        return Integer.compare(o2.getConfirmed(), o1.getConfirmed());
+                    }
+                });
                 generateData(covidDataList);
                 chart.setColumnChartData(data);
                 previewChart.setColumnChartData(previewData);
@@ -149,10 +151,28 @@ public class ChartFragment extends Fragment {
         // X, Y axis values
         List<AxisValue> axisXValues = new ArrayList<>();
         List<SubcolumnValue> values;
+        int offset = 0;
         for (int i=0; i<numColumns; i++) {
             CovidData data = covidDataList.get(i);
             values = new ArrayList<>();
-            axisXValues.add(new AxisValue(i).setLabel(data.getName()));
+            //axisXValues.add(new AxisValue(i).setLabel(data.getName()));
+            if(TAG.equals("China")) {
+                axisXValues.add(new AxisValue(i).setLabel(data.getName()));
+            } else {
+                String label = Manager.getName(data.getName());
+                Log.e("chart", data.getName() + " " + label);
+                if (label == null) {
+                    offset++;
+                    continue;
+                }
+                if (label.length() == 4) {
+                    axisXValues.add(new AxisValue(i-offset).setLabel("......." + label));
+                } else if (label.length() == 3) {
+                    axisXValues.add(new AxisValue(i-offset).setLabel("..." + label));
+                } else {
+                    axisXValues.add(new AxisValue(i-offset).setLabel(label));
+                }
+            }
                 // sub columns(4): confirmed,
                 values.add(new SubcolumnValue(getValue(data.getConfirmed()), color.get(0)).setLabel("确诊:" + data.getConfirmed()));
                 values.add(new SubcolumnValue(getValue(data.getSuspected()), color.get(1)).setLabel("疑似:" + data.getSuspected()));

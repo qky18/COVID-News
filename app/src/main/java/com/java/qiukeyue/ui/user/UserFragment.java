@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.java.qiukeyue.NewsClusterActivity;
 import com.java.qiukeyue.NewsOfflineActivity;
 import com.java.qiukeyue.R;
 import com.java.qiukeyue.bean.News;
@@ -39,6 +40,14 @@ public class UserFragment extends Fragment {
             public void onClick(View v) {
                 News.deleteAll(News.class);
                 Toast.makeText(getContext(), "历史新闻列表已清空", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        LinearLayout linearLayout3 = root.findViewById(R.id.layout_see_cluster);
+        linearLayout3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), NewsClusterActivity.class));
             }
         });
 
