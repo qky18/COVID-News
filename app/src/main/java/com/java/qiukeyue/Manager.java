@@ -1,6 +1,7 @@
 package com.java.qiukeyue;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.util.Log;
 
 
@@ -8,10 +9,15 @@ import com.java.qiukeyue.bean.CovidData;
 import com.java.qiukeyue.bean.Entity;
 import com.java.qiukeyue.bean.News;
 import com.google.gson.Gson;
+import com.java.qiukeyue.bean.Researcher;
 
 import org.json.JSONException;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -177,6 +183,50 @@ public class Manager {
                 }
                 List<Entity> entities = fetch.fetchEntity(name,true);
                 e.onNext(entities.get(0));
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())//Observable在哪个线程（不能放在主线程）
+                .observeOn(AndroidSchedulers.mainThread())//Observer在哪个线程
+                .subscribe(observer);
+    }
+    
+    public static void getCluster(Observer<List<String>> observer, final String type, final Context context){
+        Observable.create(new ObservableOnSubscribe<List<String>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<String>> e) throws Exception{
+                List<String> result = new ArrayList<>();
+                if(!type.equals("传播")&&!type.equals("抗体")&&!type.equals("易感人群")&&!type.equals("疫情")&&!type.equals("疫苗")&&!type.equals("病毒")&&!type.equals("药品")){
+                    Log.e("Manager","wrong type:"+type);
+                    e.onNext(result);
+                    e.onComplete();
+                }
+                try{
+                    InputStream in = context.getAssets().open(type+".txt");
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                    while(reader.ready()){
+                        result.add(reader.readLine());
+                    }
+                    in.close();
+                    reader.close();
+                }
+                catch(IOException exception){
+                    exception.printStackTrace();
+                }
+                e.onNext(result);
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())//Observable在哪个线程（不能放在主线程）
+                .observeOn(AndroidSchedulers.mainThread())//Observer在哪个线程
+                .subscribe(observer);
+    }
+    public static void getResearcher(Observer<List<Researcher>> observer, final boolean passed_away){
+        Observable.create(new ObservableOnSubscribe<List<Researcher>>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<List<Researcher>> e) throws Exception{
+                if(fetch==null){
+                    fetch = new Fetch();
+                }
+                e.onNext(fetch.fetchResearcher(passed_away));
                 e.onComplete();
             }
         }).subscribeOn(Schedulers.io())//Observable在哪个线程（不能放在主线程）
