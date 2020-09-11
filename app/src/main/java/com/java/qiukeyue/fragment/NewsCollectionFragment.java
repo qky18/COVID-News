@@ -49,8 +49,9 @@ public class NewsCollectionFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        SugarContext.init(getContext());
-
+        if(TAG.equals("news")) {
+            SugarContext.init(getContext());
+        }
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -62,35 +63,38 @@ public class NewsCollectionFragment extends Fragment implements
 
         initRecyclerView(rootView);
         initObserver(true);
-        if(TAG.equals("news")) {
-            initSwipeRefresh(rootView);
-        }
+        initSwipeRefresh(rootView);
+
         return rootView;
     }
 
     private void initSwipeRefresh(View rootView) {
         refreshLayout = rootView.findViewById(R.id.swipe_refresh);
-        refreshLayout.setRefreshHeader(new ClassicsHeader(this.getContext()));
-        refreshLayout.setRefreshFooter(new ClassicsFooter(this.getContext()));
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                Log.e("newsCollection", "onRefresh: ");
-                // This method performs the actual data-refresh operation.
-                // The method calls setRefreshing(false) when it's finished.
-                isLoadingMore = false;
-                Manager.refresh_n(TAG, true, observer);
-                //refreshlayout.finishRefresh();//传入false表示刷新失败
-            }
-        });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(RefreshLayout refreshlayout) {
-                isLoadingMore = true;
-                Manager.refresh_n(TAG, false, observer);
-                //refreshlayout.finishLoadMore();//传入false表示加载失败
-            }
-        });
+        if(TAG.equals("news") || TAG.equals("paper")) {
+            refreshLayout.setRefreshHeader(new ClassicsHeader(this.getContext()));
+            refreshLayout.setRefreshFooter(new ClassicsFooter(this.getContext()));
+            refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+                @Override
+                public void onRefresh(RefreshLayout refreshlayout) {
+                    Log.e(TAG, "onRefresh: ");
+                    // This method performs the actual data-refresh operation.
+                    // The method calls setRefreshing(false) when it's finished.
+                    isLoadingMore = false;
+                    Manager.refresh_n(TAG, true, observer);
+                }
+            });
+            refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void onLoadMore(RefreshLayout refreshlayout) {
+                    isLoadingMore = true;
+                    Manager.refresh_n(TAG, false, observer);
+                }
+            });
+        }
+        else {
+            refreshLayout.setEnableRefresh(false);
+            refreshLayout.setEnableLoadMore(false);
+        }
     }
 
     private void initRecyclerView(View rootView) {
@@ -110,33 +114,47 @@ public class NewsCollectionFragment extends Fragment implements
         observer = new Observer<List<News>>() {
             @Override
             public void onSubscribe(Disposable d) {
-                Log.e("NewsCollectionFrag","observer subscribed");
+                Log.e(TAG,"observer subscribed");
             }
             @Override
             public void onNext(List<News> news) {
-                Log.e("NewsCollectionFrag","getList");
-                if(refreshLayout != null){
-                    if(isLoadingMore){
-                        refreshLayout.finishLoadMore();
-                        for(News n: news){
-                            if(News.find(News.class, "_id = ?", n.get_id()).size() > 0){
-                                n.setVisited(true);
-                            } else{
-                                n.setVisited(false);
+                Log.e(TAG,"getList");
+                if(TAG.equals("news")|| TAG.equals("paper")) {
+                    if (refreshLayout != null) {
+                        if (isLoadingMore) {
+                            refreshLayout.finishLoadMore();
+                            if (TAG.equals("news")) {
+                                for (News n : news) {
+                                    if (News.find(News.class, "_id = ?", n.get_id()).size() > 0) {
+                                        n.setVisited(true);
+                                    } else {
+                                        n.setVisited(false);
+                                    }
+                                }
                             }
-                        }
-                        mAdapter.addNewsList(news);
-                    } else{
-                        refreshLayout.finishRefresh();
-                        for(News n: news){
-                            if(News.find(News.class, "_id = ?", n.get_id()).size() > 0){
-                                n.setVisited(true);
-                            } else{
-                                n.setVisited(false);
+                            mAdapter.addNewsList(news);
+                        } else {
+                            refreshLayout.finishRefresh();
+                            if (TAG.equals("news")) {
+                                for (News n : news) {
+                                    if (News.find(News.class, "_id = ?", n.get_id()).size() > 0) {
+                                        n.setVisited(true);
+                                    } else {
+                                        n.setVisited(false);
+                                    }
+                                }
+                            } else {
+                                for (News single : news) {
+                                    Log.e(TAG, single.getTitle());
+                                }
                             }
+
+                            mAdapter.setNewsList(news);
                         }
-                        mAdapter.setNewsList(news);
                     }
+                }
+                else{
+                    mAdapter.setNewsList(news);
                 }
             }
             @Override
@@ -144,17 +162,19 @@ public class NewsCollectionFragment extends Fragment implements
             }
             @Override
             public void onComplete() {
-                Log.e("NewsCollectionFrag","Complete");
+                Log.e(TAG,"Complete");
             }
         };
-        Log.e("NewsCollection","Observer available");
-        Manager.refresh_n(TAG, getNew, observer);
+        if(TAG.equals("news") || TAG.equals("paper")) {
+            Manager.refresh_n(TAG, getNew, observer);
+        } else {
+            Manager.getCluster(observer, TAG, getContext());
+        }
     }
 
     @Override
     public void onNewsSelected(News news) {
-        // Record clicked news
-        if(!news.getVisited()){
+        if(TAG.equals("news") && !news.getVisited()){
             news.save();
         }
 

@@ -84,24 +84,22 @@ public class Fetch {
         if(response.isSuccessful()){
             ResponseBody body = response.body();
             String json = body.string();
-            Log.e("FetchNews", "json: " + json);
+            //Log.e("FetchNews", "type:"+type+" json: " + json);
             List<News> result=new ArrayList<>();
             if(json != null){
                 JSONObject root = new JSONObject(json);
-                //Log.e("FetchNews", "before convert: " + root.getString("data"));
+                //Log.e("FetchNews", "type:"+type+" before convert: " + root.getString("data"));
                 JSONArray array = root.getJSONArray("data");
-                JSONObject pagination = root.getJSONObject("pagination");
-                Integer total=pagination.getInt("total");
                 Gson gson = new Gson();
                 for(int i = startNum; i < endNum; i++){
                     String singleNews = array.getJSONObject(i).toString();
-                    int start = singleNews.indexOf("\"id");
+                    int start = singleNews.indexOf("\"geoInfo");
                     int end = singleNews.indexOf("\"lang");
                     // 由于拉取下来的数据里包含id项，而News继承了SugarRecord，里面本身就有一个Long类型的id，与String类型的id冲突，因此把singleNews中的id段直接删掉
                     String singleNews2 = singleNews.substring(0,start) + singleNews.substring(end);
-                    //Log.e("FetchNews", "before convert: " + singleNews2);
+                    //Log.e("FetchNews", "type:"+type+" before convert: " + singleNews2);
                     News news = gson.fromJson(singleNews2, News.class);
-                    //Log.e("FetchNews", "after convert: " + news.getTitle());
+                    //Log.e("FetchNews", "type:"+type+" after convert: " + news.getTitle());
 
 
                     if(keyword == null){

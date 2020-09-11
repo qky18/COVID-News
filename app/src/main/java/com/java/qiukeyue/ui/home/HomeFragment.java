@@ -64,6 +64,13 @@ public class HomeFragment extends Fragment {
                 homePagerAdapter.setCategory(s);
             }
         });
+
+        tabViewModel.getDelCategory().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(@Nullable List<String> s) {
+                homePagerAdapter.setDelCategory(s);
+            }
+        });
         return root;
     }
 }

@@ -86,6 +86,7 @@ public class Manager {
                     result = fetch.fetchNews(type,1+sub/20,sub%20,20,null,20);
                     result.addAll(fetch.fetchNews(type,2+sub%20,0,sub%20,null,20));
                 }
+
                 e.onNext(result);
                 e.onComplete();
             }
@@ -192,11 +193,11 @@ public class Manager {
                 .subscribe(observer);
     }
 
-    public static void getCluster(Observer<List<String>> observer, final String type, final Context context){
-        Observable.create(new ObservableOnSubscribe<List<String>>() {
+    public static void getCluster(Observer<List<News>> observer, final String type, final Context context){
+        Observable.create(new ObservableOnSubscribe<List<News>>() {
             @Override
-            public void subscribe(@NonNull ObservableEmitter<List<String>> e) throws Exception{
-                List<String> result = new ArrayList<>();
+            public void subscribe(@NonNull ObservableEmitter<List<News>> e) throws Exception{
+                List<News> result = new ArrayList<>();
                 if(!type.equals("传播")&&!type.equals("抗体")&&!type.equals("易感人群")&&!type.equals("疫情")&&!type.equals("疫苗")&&!type.equals("病毒")&&!type.equals("药品")){
                     Log.e("Manager","wrong type:"+type);
                     e.onNext(result);
@@ -206,7 +207,9 @@ public class Manager {
                     InputStream in = context.getAssets().open(type+".txt");
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                     while(reader.ready()){
-                        result.add(reader.readLine());
+                        News temp = new News();
+                        temp.setTitle(reader.readLine());
+                        result.add(temp);
                     }
                     in.close();
                     reader.close();

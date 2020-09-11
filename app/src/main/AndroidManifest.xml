@@ -28,20 +28,7 @@
         <activity android:name=".EntitySearchedActivity"></activity>
         <activity android:name=".EntityViewActivity"></activity>
         <activity android:name=".NewsOfflineActivity"></activity>
-
-        <!--
-        <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:noHistory="true"
-            android:launchMode="singleTask" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="tencent你的AppId" />
-            </intent-filter>
-        </activity>
-        -->
+        <activity android:name=".NewsClusterActivity"></activity>
 
         <meta-data
             android:name="DATABASE"

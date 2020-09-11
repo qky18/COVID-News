@@ -12,16 +12,14 @@ import java.util.List;
 
 public class ShareNews {
 
-    public static void shareQQFriend(Context context, String msgTitle, String msgText) {
+    public static void shareQQFriend(Context context, String msgTitle) {
 
         shareMsg(context, "com.tencent.mobileqq",
-                "com.tencent.mobileqq.activity.JumpActivity", "QQ", msgTitle,
-                msgText);
+                "com.tencent.mobileqq.activity.JumpActivity", "QQ", msgTitle);
     }
 
-    public static void shareWeChatFriend(Context context, String msgTitle, String msgText) {
-        shareMsg(context, "com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI", "微信",
-                msgTitle, msgText);
+    public static void shareWeChatFriend(Context context, String msgTitle) {
+        shareMsg(context, "com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI", "微信", msgTitle);
     }
 
 
@@ -36,12 +34,10 @@ public class ShareNews {
      *            (应用名,跳转到的应用名称)
      * @param msgTitle
      *            (标题)
-     * @param msgText
-     *            (内容)
      */
     @SuppressLint("NewApi")
     private static void shareMsg(Context context, String packageName, String activityName,
-                          String appname, String msgTitle, String msgText) {
+                          String appname, String msgTitle) {
         if (!packageName.isEmpty() && !isAvailable(context, packageName)) {// 判断APP是否存在
             Toast.makeText(context, "请先安装" + appname, Toast.LENGTH_SHORT)
                     .show();
@@ -52,7 +48,6 @@ public class ShareNews {
         intent.setType("text/plain");
 
         intent.putExtra(Intent.EXTRA_SUBJECT, msgTitle);
-        intent.putExtra(Intent.EXTRA_TEXT, msgText);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (!packageName.isEmpty()) {
             intent.setComponent(new ComponentName(packageName, activityName));

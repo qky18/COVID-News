@@ -38,27 +38,4 @@ public class TabViewModel extends ViewModel {
     }
 }
 
-/*
-public class TabManager {
-    static private ArrayList<String> category = new ArrayList<>(Arrays.asList("news", "paper"));
-    static private ArrayList<String> delCategory = new ArrayList<>();
-
-    public static ArrayList<String> getCategory(){
-        return category;
-    }
-
-    public static ArrayList<String> getDelCategory(){
-        return delCategory;
-    }
-
-    public static void setCategory(ArrayList<String> cat){
-        category = cat;
-    }
-
-    public static void setDelCategory(ArrayList<String> delCat){
-        delCategory = delCat;
-    }
-}
-
- */
 

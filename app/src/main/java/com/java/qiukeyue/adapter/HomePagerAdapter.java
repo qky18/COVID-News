@@ -39,9 +39,13 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
         return category.size();
     }
 
-
     public void setCategory(List<String> s) {
         this.category = s;
+        notifyDataSetChanged();
+    }
+
+    public void setDelCategory(List<String> s) {
+        this.delCategory = s;
         notifyDataSetChanged();
     }
 
@@ -50,10 +54,6 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
     }
 
     public ArrayList<String> getDelCategory() {
-        ArrayList<String> delCategory = new ArrayList<>();
-        delCategory.add("news");
-        delCategory.add("paper");
-        delCategory.removeAll(category);
-        return delCategory;
+        return new ArrayList<>(delCategory);
     }
 }

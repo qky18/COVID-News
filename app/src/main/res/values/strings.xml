@@ -23,5 +23,6 @@
     <string name="share_qq">分享到QQ</string>
     <string name="news_history">新闻查看记录</string>
     <string name="news_clear">清空历史列表</string>
+    <string name="news_cluster">猜你可能想看</string>
 
 </resources>
