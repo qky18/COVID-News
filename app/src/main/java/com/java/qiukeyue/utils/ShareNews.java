@@ -47,7 +47,7 @@ public class ShareNews {
         Intent intent = new Intent("android.intent.action.SEND");
         intent.setType("text/plain");
 
-        intent.putExtra(Intent.EXTRA_SUBJECT, msgTitle);
+        intent.putExtra(Intent.EXTRA_TEXT, msgTitle);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (!packageName.isEmpty()) {
             intent.setComponent(new ComponentName(packageName, activityName));
@@ -55,9 +55,6 @@ public class ShareNews {
         } else {
             context.startActivity(Intent.createChooser(intent, msgTitle));
         }
-
-        Toast.makeText(context, "分享成功",
-                Toast.LENGTH_LONG).show();
     }
 
     /**

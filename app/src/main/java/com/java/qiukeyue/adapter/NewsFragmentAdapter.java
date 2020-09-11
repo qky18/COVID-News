@@ -74,7 +74,7 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
             mSource.setText(news.getSource());
             mDate.setText(news.getTime());
             if(news.getVisited()){
-                mTitle.setTextColor(itemView.getResources().getColor(R.color.catArrangeHintColor));
+                mTitle.setTextColor(itemView.getResources().getColor(R.color.clickedNews2));
             }
 
             // Click listener
