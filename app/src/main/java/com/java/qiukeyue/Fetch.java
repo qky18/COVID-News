@@ -29,6 +29,7 @@ import okhttp3.ResponseBody;
 public class Fetch {
     private int backwardIndex_n;//第一条新闻到最后一条的距离
     private int searchIndex_n;//用于搜索
+    private int backwardIndex_p;//for paper
 
     private String[] province = new String[]{
             "China|Hong Kong", "China|Xinjiang", "China|Beijing", "China|Sichuan", "China|Gansu", "China|Shanghai", "China|Guangdong", "China|Taiwan", "China|Hebei", "China|Shaanxi", "China|Shanxi", "China|Yunnan", "China|Chongqing", "China|Inner Mongol", "China|Shandong", "China|Zhejiang", "China|Tianjin", "China|Liaoning", "China|Fujian", "China|Jiangsu", "China|Hainan", "China|Macao", "China|Jilin", "China|Hubei", "China|Jiangxi", "China|Heilongjiang", "China|Anhui", "China|Guizhou", "China|Hunan", "China|Henan", "China|Guangxi", "China|Ningxia", "China|Qinghai", "China|Xizang"
@@ -37,7 +38,8 @@ public class Fetch {
             "China", "United States of America", "Brazil", "India", "United Kingdom", "Russia", "Bangladesh", "Peru", "Mexico", "Spain", "Pakistan", "Argentina", "Egypt", "Saudi Arabia", "Philippines", "Indonesia", "Netherlands", "Iraq", "Canada", "Ukraine", "Kazakhstan", "Guatemala", "Israel", "Iran", "Oman", "Nigeria", "Turkey", "Afghanistan", "Armenia", "Romania", "Kuwait", "United Arab Emirates", "Azerbaijan", "Poland", "Belarus", "Kenya", "Palestine", "Moldova", "Uzbekistan", "Nepal", "El Salvador", "Japan", "Singapore", "Germany", "Czechia", "Bosnia and Herz.", "Bulgaria", "Sudan", "Bahrain", "Luxembourg", "Ghana", "Ethiopia", "Mauritania", "Senegal", "Morocco", "Albania", "Switzerland", "South Korea", "Libya", "Lithuania", "Latvia", "Estonia", "Hungary", "Cyprus", "São Tomé and Principe", "Angola", "Syria", "Finland", "Slovenia", "Niger", "Georgia", "Guyana", "Thailand", "Uruguay", "Mauritius", "South Africa", "Colombia", "Sweden", "France", "Ecuador", "Bolivia", "Belgium", "Panama", "Dominican Rep.", "Honduras", "Chile", "Portugal", "Italy", "Puerto Rico", "Serbia", "Venezuela", "Costa Rica", "Côte d\"Ivoire", "Haiti", "Algeria", "Dem. Rep. Congo", "Macedonia", "Cameroon", "Qatar", "Central African Rep.", "Madagascar", "Denmark", "Nicaragua", "Gabon", "Australia", "Greece", "Paraguay", "Eq. Guinea", "Somalia", "Austria", "Cuba", "Malawi", "Djibouti", "Guinea", "Croatia", "Benin", "Lebanon", "Mozambique", "Namibia", "Chad", "Mali", "Jamaica", "eSwatini", "Zimbabwe", "Rwanda", "Sri Lanka", "San Marino", "Liberia", "Togo", "Norway", "Sierra Leone", "Ireland", "Maldives", "Slovakia", "Botswana", "Jordan", "Andorra", "Tanzania", "Isle of Man", "Guam", "Malta", "Jersey", "Malaysia", "Suriname", "Tunisia", "Guernsey", "Mongolia", "Lesotho", "Cayman Is.", "Faeroe Is.", "Gibraltar", "Burkina Faso", "Iceland", "Uganda", "Trinidad and Tobago", "Myanmar", "Vietnam", "Bahamas", "Seychelles", "Barbados", "Monaco", "Fr. Polynesia", "Bhutan", "Antigua and Barb.", "Gambia", "Cambodia", "Sint Maarten", "Belize", "St. Vin. and Gren.", "Fiji", "Saint Lucia", "Laos", "Liechtenstein", "Vatican", "Papua New Guinea", "Brunei", "New Zealand", "Turkmenistan", "World", "Montenegro", "Kyrgyzstan", "Congo", "Zambia", "Cabo Verde", "St-Martin", "Greenland", "Eritrea", "Timor-Leste", "Dominica", "U.S. Virgin Is.", "American Samoa", "N. Mariana Is.", "Guinea-Bissau", "Kosovo", "Aruba", "St. Kitts and Nevis", "Montserrat", "Grenada", "Burundi", "S. Sudan", "Yemen", "Tajikistan"
     };
     Fetch() throws IOException, JSONException {
-        backwardIndex_n = getTotal();
+        backwardIndex_n = getTotal("news");
+        backwardIndex_p = getTotal("paper");
     }
     public int checkCurrent_n(){
         return backwardIndex_n;
@@ -45,14 +47,20 @@ public class Fetch {
     public void setCurrent_n(int current_n){
         backwardIndex_n = current_n;
     }
+    public int checkCurrent_p(){
+        return backwardIndex_p;
+    }
+    public void setCurrent_p(int current_p){
+        backwardIndex_n = current_p;
+    }
     public int getSearchIndex_n(){
         return searchIndex_n;
     }
     public void setSearchIndex_n(int searchIndex_n){
         this.searchIndex_n=searchIndex_n;
     }
-    public int getTotal() throws IOException, JSONException {
-        String url = new String(String.format("https://covid-dashboard.aminer.cn/api/events/list?type=%s&page=%d&size=%d","news",1,20));
+    public int getTotal(String type) throws IOException, JSONException {
+        String url = new String(String.format("https://covid-dashboard.aminer.cn/api/events/list?type=%s&page=%d&size=%d",type,1,20));
         Request.Builder builder = new Request.Builder().url(url).get();
         Request request = builder.build();
         Call call = new OkHttpClient().newCall(request);

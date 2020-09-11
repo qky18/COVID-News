@@ -54,18 +54,30 @@ public class Manager {
                     fetch = new Fetch();
                 }
                 List<News> result;
-                int total = fetch.getTotal();
+                int total = fetch.getTotal(type);
                 if(total == -1){
                     Log.e("Manager","Error on getting total");
                 }
                 int sub = 0;//与最新一条的差距
                 if(getNew){//下拉刷新，拉取最新20条
-                    fetch.setCurrent_n(total);//拉取的是最新的
+                    if(type.equals("news")){
+                        fetch.setCurrent_n(total);//拉取的是最新的
+                    }
+                    else{
+                        fetch.setCurrent_p(total);
+                    }
                 }
                 else{//上拉加载更多
-                    int backwardIndex_n = fetch.checkCurrent_n();
-                    sub = total-backwardIndex_n+20;//拉取后面20条
-                    fetch.setCurrent_n(backwardIndex_n-20);
+                    if(type.equals("news")){
+                        int backwardIndex_n = fetch.checkCurrent_n();
+                        sub = total-backwardIndex_n+20;//拉取后面20条
+                        fetch.setCurrent_n(backwardIndex_n-20);
+                    }
+                    else{
+                        int backwardIndex_p = fetch.checkCurrent_p();
+                        sub = total-backwardIndex_p+20;//拉取后面20条
+                        fetch.setCurrent_p(backwardIndex_p-20);
+                    }
                 }
                 if(sub % 20 == 0){//正好是整数页
                     result = fetch.fetchNews(type,1+sub/20,0,20,null,20);
@@ -189,7 +201,7 @@ public class Manager {
                 .observeOn(AndroidSchedulers.mainThread())//Observer在哪个线程
                 .subscribe(observer);
     }
-    
+
     public static void getCluster(Observer<List<String>> observer, final String type, final Context context){
         Observable.create(new ObservableOnSubscribe<List<String>>() {
             @Override
