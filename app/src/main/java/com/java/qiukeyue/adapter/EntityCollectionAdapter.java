@@ -1,6 +1,7 @@
 package com.java.qiukeyue.adapter;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,9 +77,14 @@ public class EntityCollectionAdapter extends RecyclerView.Adapter<EntityCollecti
             // load entity info
             mLabel.setText(entity.getLabel());
             mInfo.setText(entity.getLabel());
-            Glide.with(mImg.getContext())
-                    .load(entity.getUrl())
-                    .into(mImg);
+            if(entity.getImg() != null){
+                mImg.setMinimumHeight(50);
+                mImg.setMinimumWidth(50);
+                Glide.with(mImg.getContext())
+                        .load(entity.getImg())
+                        .into(mImg);
+                Log.e("Entity Img", entity.getImg());
+            }
 
             // Click listener
             itemView.setOnClickListener(new View.OnClickListener() {
