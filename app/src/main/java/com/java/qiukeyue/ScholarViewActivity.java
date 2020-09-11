@@ -1,5 +1,6 @@
 package com.java.qiukeyue;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import com.java.qiukeyue.adapter.NewsFragmentAdapter;
 import com.java.qiukeyue.bean.Entity;
 import com.java.qiukeyue.bean.Researcher;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -68,14 +70,16 @@ public class ScholarViewActivity extends AppCompatActivity {
         mBio = findViewById(R.id.scholar_bio);
         mEdu = findViewById(R.id.scholar_edu);
 
-        // load researcher information
+        DecimalFormat df = new DecimalFormat("#0.00");
+
+        // load scholar info
         mName.setText(researcher.getName());
 
         Researcher.IndicesBean indicesBean = researcher.getIndices();
         hIndex.setText(String.valueOf(indicesBean.getHindex()));
-        activityIndex.setText(String.valueOf(indicesBean.getActivity()));
+        activityIndex.setText((indicesBean.getActivity() == 0) ? "0" : df.format(indicesBean.getActivity()));
         pubIndex.setText(String.valueOf(indicesBean.getPubs()));
-        socialIndex.setText(String.valueOf(indicesBean.getSociability()));
+        socialIndex.setText(indicesBean.getSociability() == 0 ? "0" : df.format(indicesBean.getSociability()));
         citeIndex.setText(String.valueOf(indicesBean.getCitations()));
 
         mPosition.setText(researcher.getProfile().getPosition());
@@ -93,7 +97,7 @@ public class ScholarViewActivity extends AppCompatActivity {
 
 
         if(researcher.isIs_passedaway()){
-            mName.setTextColor(ChartUtils.DEFAULT_DARKEN_COLOR);
+            mName.setTextColor(Color.GRAY);
         }
 
     }

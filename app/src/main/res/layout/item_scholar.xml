@@ -128,8 +128,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_below="@+id/scholar_indices2"
                 android:layout_marginTop="3dp"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="中国工程院院士、主任、组长"
                 android:textSize="10sp"/>
             <TextView
@@ -139,8 +137,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_below="@+id/scholar_position"
                 android:layout_marginTop="3dp"
-                android:singleLine="true"
-                android:ellipsize="end"
                 android:text="国家呼吸系统疾病临床医学研究中心/国家卫健委/广州呼吸疾病研究所"
                 android:textSize="10sp"/>
         </RelativeLayout>

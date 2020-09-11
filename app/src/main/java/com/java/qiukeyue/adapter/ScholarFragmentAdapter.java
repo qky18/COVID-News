@@ -2,6 +2,7 @@ package com.java.qiukeyue.adapter;
 
 import android.graphics.Color;
 import android.media.Image;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.java.qiukeyue.R;
 import com.java.qiukeyue.bean.News;
 import com.java.qiukeyue.bean.Researcher;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import lecho.lib.hellocharts.util.ChartUtils;
@@ -74,17 +76,24 @@ public class ScholarFragmentAdapter extends RecyclerView.Adapter<ScholarFragment
             citeIndex = itemView.findViewById(R.id.scholar_citations);
             mPosition = itemView.findViewById(R.id.scholar_position);
             mAffiliation = itemView.findViewById(R.id.scholar_affiliation);
+
+            mPosition.setMaxLines(1);
+            mPosition.setEllipsize(TextUtils.TruncateAt.END);
+            mAffiliation.setMaxLines(2);
+            mAffiliation.setEllipsize(TextUtils.TruncateAt.END);
         }
 
         public void bind(final Researcher researcher, final OnScholarSelectedListener listener) {
+            DecimalFormat df = new DecimalFormat("#0.00");
+
             // load scholar info
             mName.setText(researcher.getName());
 
             Researcher.IndicesBean indicesBean = researcher.getIndices();
             hIndex.setText(String.valueOf(indicesBean.getHindex()));
-            activityIndex.setText(String.valueOf(indicesBean.getActivity()));
+            activityIndex.setText((indicesBean.getActivity() == 0) ? "0" : df.format(indicesBean.getActivity()));
             pubIndex.setText(String.valueOf(indicesBean.getPubs()));
-            socialIndex.setText(String.valueOf(indicesBean.getSociability()));
+            socialIndex.setText(indicesBean.getSociability() == 0 ? "0" : df.format(indicesBean.getSociability()));
             citeIndex.setText(String.valueOf(indicesBean.getCitations()));
 
             mPosition.setText(researcher.getProfile().getPosition());
