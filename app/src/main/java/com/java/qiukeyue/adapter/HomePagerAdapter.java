@@ -7,20 +7,22 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.java.qiukeyue.fragment.NewsCollectionFragment;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 // Since this(???) is an object collection, use a FragmentStatePagerAdapter,
 // and NOT a FragmentPagerAdapter.
 public class HomePagerAdapter extends FragmentStatePagerAdapter {
-    private String[] tabTitles;
+    private ArrayList<String> tabTitles;
 
-
-    public HomePagerAdapter(@NonNull FragmentManager fm, String[] tabTitles) {
+    public HomePagerAdapter(@NonNull FragmentManager fm, ArrayList<String> category) {
         super(fm);
-        this.tabTitles = tabTitles;
+        this.tabTitles = category;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return tabTitles[position % tabTitles.length];
+        return tabTitles.get(position % tabTitles.size());
     }
 
     @NonNull
@@ -31,9 +33,8 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    //TODO: 10?
     public int getCount() {
-        return tabTitles.length;
+        return tabTitles.size();
     }
 
     /*
