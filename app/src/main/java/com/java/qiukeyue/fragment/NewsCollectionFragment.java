@@ -143,10 +143,6 @@ public class NewsCollectionFragment extends Fragment implements
                                         n.setVisited(false);
                                     }
                                 }
-                            } else {
-                                for (News single : news) {
-                                    Log.e(TAG, single.getTitle());
-                                }
                             }
 
                             mAdapter.setNewsList(news);

@@ -20,6 +20,8 @@
                 android:id="@+id/entity_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/entity_img"
                 android:text="病毒"
                 android:textSize="17sp"
                 android:textStyle="bold"
@@ -40,10 +42,9 @@
 
             <ImageView
                 android:id="@+id/entity_img"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/default_virus"/>
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"/>
 
         </RelativeLayout>
 

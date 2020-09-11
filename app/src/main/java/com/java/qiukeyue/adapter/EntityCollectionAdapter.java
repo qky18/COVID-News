@@ -76,14 +76,16 @@ public class EntityCollectionAdapter extends RecyclerView.Adapter<EntityCollecti
 
             // load entity info
             mLabel.setText(entity.getLabel());
-            mInfo.setText(entity.getLabel());
+            mInfo.setText(entity.getAbstractInfo().getBaidu());
             if(entity.getImg() != null){
                 mImg.setMinimumHeight(50);
                 mImg.setMinimumWidth(50);
                 Glide.with(mImg.getContext())
                         .load(entity.getImg())
                         .into(mImg);
-                Log.e("Entity Img", entity.getImg());
+            } else{
+                mImg.setMaxWidth(0);
+                mImg.setMaxHeight(0);
             }
 
             // Click listener

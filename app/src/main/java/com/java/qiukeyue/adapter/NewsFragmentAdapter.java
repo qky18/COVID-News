@@ -68,7 +68,8 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
             mDate = itemView.findViewById(R.id.news_date);
         }
 
-        public void bind(final News news, final OnNewsSelectedListener listener) {// load news info
+        public void bind(final News news, final OnNewsSelectedListener listener) {
+            // load news info
             mTitle.setText(news.getTitle());
             mSource.setText(news.getSource());
             mDate.setText(news.getTime());

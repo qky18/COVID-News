@@ -44,6 +44,7 @@ public class EntityViewActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.news_toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("实体信息");
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,9 +69,14 @@ public class EntityViewActivity extends AppCompatActivity {
 
         mLabel.setText(label);
         mInfo.setText(info);
-        Glide.with(mImg.getContext())
-                .load(img)
-                .into(mImg);
+        if(img != null) {
+            Glide.with(mImg.getContext())
+                    .load(img)
+                    .into(mImg);
+        } else {
+            mImg.setMaxWidth(0);
+            mImg.setMaxHeight(0);
+        }
 
         TextView mDef = findViewById(R.id.entity_definition_content);
         TextView mFeature = findViewById(R.id.entity_feature_content);
@@ -78,13 +84,14 @@ public class EntityViewActivity extends AppCompatActivity {
         TextView mCondition = findViewById(R.id.entity_condition_content);
         TextView mSpread = findViewById(R.id.entity_spread_content);
         TextView mApplication = findViewById(R.id.entity_application_content);
-        mDef.setText(prop.getDefinition());
-        mFeature.setText(prop.getFeature());
-        mInclude.setText(prop.getInclude());
-        mCondition.setText(prop.getCondition());
-        mSpread.setText(prop.getSpread());
-        mApplication.setText(prop.getApplication());
-
+        if(prop != null) {
+            mDef.setText(prop.getDefinition());
+            mFeature.setText(prop.getFeature());
+            mInclude.setText(prop.getInclude());
+            mCondition.setText(prop.getCondition());
+            mSpread.setText(prop.getSpread());
+            mApplication.setText(prop.getApplication());
+        }
     }
 
 }

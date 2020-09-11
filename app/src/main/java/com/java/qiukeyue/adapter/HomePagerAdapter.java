@@ -1,14 +1,11 @@
 package com.java.qiukeyue.adapter;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.Observer;
 
 import com.java.qiukeyue.fragment.NewsCollectionFragment;
-import com.java.qiukeyue.utils.TabViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

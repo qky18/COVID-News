@@ -298,7 +298,7 @@ public class Fetch {
                 for(int i = 0; i < array.length(); i++){
                     String person = array.getJSONObject(i).toString();
                     int chop = person.indexOf("is_passed");
-                    String substring = person.substring(chop + 16, chop + 21);
+                    String substring = person.substring(chop + 15, chop + 20);
                     Log.e("Fetch","check chop:"+ substring);
                     if(substring.equals("false") && passed_away){
                         continue;

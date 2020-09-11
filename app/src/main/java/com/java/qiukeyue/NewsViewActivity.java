@@ -82,6 +82,7 @@ public class NewsViewActivity extends AppCompatActivity {
                 finish();
             }
         });
+        toolbar.setTitle("新闻详情");
     }
 
     private void initView() {
