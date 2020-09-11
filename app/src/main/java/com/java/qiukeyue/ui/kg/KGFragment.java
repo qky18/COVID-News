@@ -1,6 +1,7 @@
 package com.java.qiukeyue.ui.kg;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,12 +23,13 @@ public class KGFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_kg, container, false);
         mSearchView = root.findViewById(R.id.search_view);
         mSearchView.setIconifiedByDefault(false);
+        View mView = mSearchView.findViewById(R.id.search_plate);
+        mView.setBackgroundColor(Color.TRANSPARENT);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 // submit query text & go to next page
                 Log.e("Debug", "TextSubmit : " + s);
-                mSearchView.setIconified(true);
                 Intent intent = new Intent(getActivity(), EntitySearchedActivity.class);
                 intent.putExtra("keyword", s);
                 startActivity(intent);

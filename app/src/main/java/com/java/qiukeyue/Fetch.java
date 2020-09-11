@@ -84,7 +84,7 @@ public class Fetch {
         if(response.isSuccessful()){
             ResponseBody body = response.body();
             String json = body.string();
-            //Log.e("FetchNews", "json: " + json);
+            Log.e("FetchNews", "json: " + json);
             List<News> result=new ArrayList<>();
             if(json != null){
                 JSONObject root = new JSONObject(json);

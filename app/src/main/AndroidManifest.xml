@@ -27,6 +27,7 @@
         <activity android:name=".CategoryActivity"></activity>
         <activity android:name=".EntitySearchedActivity"></activity>
         <activity android:name=".EntityViewActivity"></activity>
+        <activity android:name=".NewsOfflineActivity"></activity>
 
         <!--
         <activity

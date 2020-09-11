@@ -1,6 +1,7 @@
 package com.java.qiukeyue.bean;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
 import java.util.List;
 
@@ -27,13 +28,20 @@ public class News extends SugarRecord {
     private String category;
     private String content;
     private String date;
-    private String lang;
     private String source;
     private String time;
     private String title;
     private String type;
-    private java.util.List<EntitiesBean> entities;
-    private java.util.List<String> urls;
+    @Ignore
+    private boolean visited;
+
+    public boolean getVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited){
+        this.visited = visited;
+    }
 
     public String get_id() {
         return _id;
@@ -65,14 +73,6 @@ public class News extends SugarRecord {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public String getLang() {
-        return lang;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
     }
 
     public String getSource() {
@@ -107,45 +107,4 @@ public class News extends SugarRecord {
         this.type = type;
     }
 
-    public List<EntitiesBean> getEntities() {
-        return entities;
-    }
-
-    public void setEntities(List<EntitiesBean> entities) {
-        this.entities = entities;
-    }
-
-    public List<String> getUrls() {
-        return urls;
-    }
-
-    public void setUrls(List<String> urls) {
-        this.urls = urls;
-    }
-
-    public static class EntitiesBean {
-        /**
-         * label : hong kong residents
-         * url : http://xlore.org/instance/eni2367574
-         */
-
-        private String label;
-        private String url;
-
-        public String getLabel() {
-            return label;
-        }
-
-        public void setLabel(String label) {
-            this.label = label;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-    }
 }

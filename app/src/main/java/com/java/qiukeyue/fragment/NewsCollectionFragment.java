@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.java.qiukeyue.MainActivity;
 import com.java.qiukeyue.Manager;
 import com.java.qiukeyue.NewsViewActivity;
 import com.java.qiukeyue.R;
@@ -34,12 +35,16 @@ import io.reactivex.disposables.Disposable;
 // Instances of HomeFragment class are fragments representing a single type of collection
 public class NewsCollectionFragment extends Fragment implements
         NewsFragmentAdapter.OnNewsSelectedListener {
-    private String tab;
+    private final String TAG;
     private Observer<List<News>> observer = null;
     private List<News> newsList = new LinkedList<>();
     private NewsFragmentAdapter mAdapter;
     private RefreshLayout refreshLayout;
     boolean isLoadingMore = false;
+
+    public NewsCollectionFragment(final String tag){
+        this.TAG = tag;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -57,8 +62,9 @@ public class NewsCollectionFragment extends Fragment implements
 
         initRecyclerView(rootView);
         initObserver(true);
-        initSwipeRefresh(rootView);
-
+        if(TAG.equals("news")) {
+            initSwipeRefresh(rootView);
+        }
         return rootView;
     }
 
@@ -73,7 +79,7 @@ public class NewsCollectionFragment extends Fragment implements
                 // This method performs the actual data-refresh operation.
                 // The method calls setRefreshing(false) when it's finished.
                 isLoadingMore = false;
-                Manager.refresh_n("news", true, observer);
+                Manager.refresh_n(TAG, true, observer);
                 //refreshlayout.finishRefresh();//传入false表示刷新失败
             }
         });
@@ -81,7 +87,7 @@ public class NewsCollectionFragment extends Fragment implements
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
                 isLoadingMore = true;
-                Manager.refresh_n("news", false, observer);
+                Manager.refresh_n(TAG, false, observer);
                 //refreshlayout.finishLoadMore();//传入false表示加载失败
             }
         });
@@ -112,9 +118,23 @@ public class NewsCollectionFragment extends Fragment implements
                 if(refreshLayout != null){
                     if(isLoadingMore){
                         refreshLayout.finishLoadMore();
+                        for(News n: news){
+                            if(News.find(News.class, "_id = ?", n.get_id()).size() > 0){
+                                n.setVisited(true);
+                            } else{
+                                n.setVisited(false);
+                            }
+                        }
                         mAdapter.addNewsList(news);
                     } else{
                         refreshLayout.finishRefresh();
+                        for(News n: news){
+                            if(News.find(News.class, "_id = ?", n.get_id()).size() > 0){
+                                n.setVisited(true);
+                            } else{
+                                n.setVisited(false);
+                            }
+                        }
                         mAdapter.setNewsList(news);
                     }
                 }
@@ -128,22 +148,23 @@ public class NewsCollectionFragment extends Fragment implements
             }
         };
         Log.e("NewsCollection","Observer available");
-        Manager.refresh_n("news", getNew, observer);
+        Manager.refresh_n(TAG, getNew, observer);
     }
 
     @Override
     public void onNewsSelected(News news) {
         // Record clicked news
-        news.save();
-        List<News> n = News.listAll(News.class);
-        for(News single : n){
-            Log.e("Selected",single.getTitle());
+        if(!news.getVisited()){
+            news.save();
         }
 
         // Go to the details page for the selected news
         Intent intent = new Intent(getActivity(), NewsViewActivity.class);
         intent.putExtra("title", news.getTitle());
         intent.putExtra("content", news.getContent());
-        startActivity(intent);
+        intent.putExtra("visited", news.getVisited());
+        intent.putExtra("source", news.getSource());
+        intent.putExtra("date", news.getTime());
+        startActivityForResult(intent, MainActivity.NEWS);
     }
 }
