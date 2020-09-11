@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.java.qiukeyue.R;
 import com.java.qiukeyue.bean.News;
+import com.orm.SugarContext;
 
 import java.util.List;
 
@@ -67,11 +68,13 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
             mDate = itemView.findViewById(R.id.news_date);
         }
 
-        public void bind(final News news, final OnNewsSelectedListener listener) {
-            // load news info
+        public void bind(final News news, final OnNewsSelectedListener listener) {// load news info
             mTitle.setText(news.getTitle());
             mSource.setText(news.getSource());
             mDate.setText(news.getTime());
+            if(news.getVisited()){
+                mTitle.setTextColor(itemView.getResources().getColor(R.color.catArrangeHintColor));
+            }
 
             // Click listener
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -39,7 +39,7 @@ public class EntityRelationAdapter extends RecyclerView.Adapter<EntityRelationAd
 
     @Override
     public int getItemCount() {
-        return Math.max(20, relations.size());
+        return Math.min(20, relations.size());
     }
 
 

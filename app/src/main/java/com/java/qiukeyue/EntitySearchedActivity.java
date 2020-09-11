@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.java.qiukeyue.adapter.EntityCollectionAdapter;
 import com.java.qiukeyue.bean.Entity;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -87,7 +88,11 @@ public class EntitySearchedActivity extends AppCompatActivity implements
     public void onEntitySelected(Entity entity) {
         // Go to the details page for the selected entity
         Intent intent = new Intent(this, EntityViewActivity.class);
-        intent.putExtra("entity", entity);
+        intent.putExtra("label", entity.getLabel());
+        intent.putExtra("info", entity.getAbstractInfo().getBaidu());
+        intent.putExtra("img", entity.getImg());
+        intent.putExtra("relation", entity.getAbstractInfo().getCOVID().getArrayRelations());
+        intent.putExtra("property", entity.getAbstractInfo().getCOVID().getProperties());
         startActivity(intent);
     }
 }

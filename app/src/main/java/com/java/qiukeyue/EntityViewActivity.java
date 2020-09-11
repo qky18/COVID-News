@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class EntityViewActivity extends AppCompatActivity {
-    private Entity entity;
+    private String label, info, img;
+    private List<com.java.qiukeyue.bean.Entity.AbstractInfoBean.COVIDBean.RelationsBean> relation;
+    private Entity.AbstractInfoBean.COVIDBean.PropertiesBean prop;
     private EntityRelationAdapter mAdapter;
 
     @Override
@@ -28,8 +30,11 @@ public class EntityViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entity_view);
 
-        // TODO: fix serializable
-        entity = (Entity) getIntent().getSerializableExtra("entity");
+        label = getIntent().getStringExtra("label");
+        info = getIntent().getStringExtra("info");
+        img = getIntent().getStringExtra("img");
+        relation = (List<Entity.AbstractInfoBean.COVIDBean.RelationsBean>) getIntent().getSerializableExtra("relation");
+        prop = (Entity.AbstractInfoBean.COVIDBean.PropertiesBean) getIntent().getSerializableExtra("property");
 
         initToolbar();
         initView();
@@ -52,7 +57,7 @@ public class EntityViewActivity extends AppCompatActivity {
 
         // Set adapter for recyclerView
         RecyclerView recyclerView = findViewById(R.id.recycler_view_relation);
-        mAdapter = new EntityRelationAdapter(entity.getAbstractInfo().getCOVID().getRelations());
+        mAdapter = new EntityRelationAdapter(relation);
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -61,10 +66,10 @@ public class EntityViewActivity extends AppCompatActivity {
         TextView mInfo = findViewById(R.id.entity_info);
         ImageView mImg = findViewById(R.id.entity_img);
 
-        mLabel.setText(entity.getLabel());
-        mInfo.setText(entity.getLabel());
+        mLabel.setText(label);
+        mInfo.setText(info);
         Glide.with(mImg.getContext())
-                .load(entity.getImg())
+                .load(img)
                 .into(mImg);
 
         TextView mDef = findViewById(R.id.entity_definition_content);
@@ -73,7 +78,6 @@ public class EntityViewActivity extends AppCompatActivity {
         TextView mCondition = findViewById(R.id.entity_condition_content);
         TextView mSpread = findViewById(R.id.entity_spread_content);
         TextView mApplication = findViewById(R.id.entity_application_content);
-        Entity.AbstractInfoBean.COVIDBean.PropertiesBean prop = entity.getAbstractInfo().getCOVID().getProperties();
         mDef.setText(prop.getDefinition());
         mFeature.setText(prop.getFeature());
         mInclude.setText(prop.getInclude());

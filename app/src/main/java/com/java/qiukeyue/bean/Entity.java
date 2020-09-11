@@ -3,6 +3,7 @@ package com.java.qiukeyue.bean;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Entity implements Serializable {
@@ -129,6 +130,10 @@ public class Entity implements Serializable {
 
             public List<RelationsBean> getRelations() {
                 return relations;
+            }
+
+            public ArrayList<RelationsBean> getArrayRelations(){
+                return new ArrayList<>(relations);
             }
 
             public void setRelations(List<RelationsBean> relations) {

@@ -68,9 +68,6 @@ public class Manager {
                     result = fetch.fetchNews(type,1+sub/20,sub%20,20,null,20);
                     result.addAll(fetch.fetchNews(type,2+sub%20,0,sub%20,null,20));
                 }
-                for(News n:result){
-                    Log.e("Manager","fetched: "+n.getTitle());
-                }
                 e.onNext(result);
                 e.onComplete();
             }
@@ -116,10 +113,6 @@ public class Manager {
                     news.addAll(fetch.fetchNews("news",i,0,20,keyword,20));
                 }
 
-                for(News n: news){
-                    Log.e("Search",n.getTitle());
-                }
-
                 e.onNext(news);
                 e.onComplete();
             }
@@ -136,9 +129,6 @@ public class Manager {
                 }
                 if(inChina){
                     List<CovidData> province = fetch.fetchCovidData(true);
-                    for(CovidData cd: province){
-                        Log.e("Manager","cd-cured: "+cd.getCured());
-                    }
                     e.onNext(province);
                 }
                 else{
