@@ -14,10 +14,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.java.qiukeyue.Manager;
 import com.java.qiukeyue.R;
 import com.java.qiukeyue.bean.CovidData;
-import com.scwang.smart.refresh.footer.ClassicsFooter;
-import com.scwang.smart.refresh.header.ClassicsHeader;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +56,7 @@ public class ChartFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -74,6 +71,12 @@ public class ChartFragment extends Fragment {
         initSwipeRefresh();
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Manager.get_covid_data(observer, TAG.equals("China"));
     }
 
     private void initSwipeRefresh() {
@@ -157,6 +160,13 @@ public class ChartFragment extends Fragment {
                 values.add(new SubcolumnValue(getValue(data.getCured()), color.get(3)).setLabel("治愈:" + data.getCured()));
 
             columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
+            /*
+            if(getValue(data.getSuspected()) < 0.2){
+                columns.add(new Column(values).setHasLabels(true).setHasLabelsOnlyForSelected(false));
+            } else{
+                columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
+            }
+             */
         }
 
         // init vertical data
@@ -178,41 +188,9 @@ public class ChartFragment extends Fragment {
         data.setAxisYLeft(new Axis().setHasLines(true).setName("人数(log)").setTextColor(Color.BLACK));
     }
 
-    private void generateDefaultData() {
-        int numSubcolumns = 1;
-        int numColumns = 50;
-        // All columns
-        List<Column> columns = new ArrayList<>();
-        // X, Y axis values
-        List<AxisValue> axisXValues = new ArrayList<>();
-        List<SubcolumnValue> values;
-        for (int i = 0; i < numColumns; ++i) {
-            values = new ArrayList<>();
-            for (int j = 0; j < numSubcolumns; ++j) {
-                values.add(new SubcolumnValue((float) Math.random() * 50f + 5, ChartUtils.pickColor()));
-            }
-
-            columns.add(new Column(values));
-        }
-
-        data = new ColumnChartData(columns);
-        data.setAxisXBottom(new Axis());
-        data.setAxisYLeft(new Axis().setHasLines(true));
-
-        // prepare preview data, is better to use separate deep copy for preview chart.
-        // set color to grey to make preview area more visible.
-        previewData = new ColumnChartData(data);
-        for (Column column : previewData.getColumns()) {
-            for (SubcolumnValue value : column.getValues()) {
-                value.setColor(ChartUtils.DEFAULT_DARKEN_COLOR);
-            }
-        }
-
-    }
-
     private void previewX(boolean animate) {
-        Viewport tempViewport = new Viewport(-0.7f, chart.getMaximumViewport().height()*1.25f, TAG.equals("China") ? 7 : 1, 0);
-        float dx = tempViewport.width() / (TAG.equals("China") ? 4 : 6);
+        Viewport tempViewport = new Viewport(-0.7f, chart.getMaximumViewport().height()*1.25f, 5, 0);
+        float dx = tempViewport.width() / 4;
         tempViewport.inset(dx, 0);
         if (animate) {
             previewChart.setCurrentViewportWithAnimation(tempViewport);
@@ -224,7 +202,7 @@ public class ChartFragment extends Fragment {
 
     private void previewXY() {
         // Better to not modify viewport of any chart directly so create a copy.
-        Viewport tempViewport = new Viewport(-0.7f, chart.getMaximumViewport().height()*1.25f, TAG.equals("China") ? 7 : 1, 0);
+        Viewport tempViewport = new Viewport(-0.7f, chart.getMaximumViewport().height()*1.25f, 5, 0);
         // Make temp viewport smaller.
         float dx = tempViewport.width() / 4;
         float dy = tempViewport.height() / 4;

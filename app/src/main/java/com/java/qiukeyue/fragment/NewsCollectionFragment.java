@@ -140,7 +140,7 @@ public class NewsCollectionFragment extends Fragment implements
             Log.e("Selected",single.getTitle());
         }
 
-        // Go to the details page for the selected patient
+        // Go to the details page for the selected news
         Intent intent = new Intent(getActivity(), NewsViewActivity.class);
         intent.putExtra("title", news.getTitle());
         intent.putExtra("content", news.getContent());

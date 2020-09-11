@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/card_rectangle_filled"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
+
+            <TextView
+                android:id="@+id/entity_definition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="定义"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/primary_text_light"/>
+
+            <TextView
+                android:id="@+id/entity_definition_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/entity_definition"
+                android:layout_marginLeft="10dp"
+                android:text="一种独特的传染因子"
+                android:textSize="14sp"
+                android:textColor="@android:color/secondary_text_light"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
+
+            <TextView
+                android:id="@+id/entity_feature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="特征"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/primary_text_light"/>
+
+            <TextView
+                android:id="@+id/entity_feature_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/entity_feature"
+                android:layout_marginLeft="10dp"
+                android:text="自主地复制"
+                android:textSize="14sp"
+                android:textColor="@android:color/secondary_text_light"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
+
+            <TextView
+                android:id="@+id/entity_include"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="包括"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/primary_text_light"/>
+
+            <TextView
+                android:id="@+id/entity_include_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/entity_include"
+                android:layout_marginLeft="10dp"
+                android:text="拟病毒、类病毒和病毒粒子"
+                android:textSize="14sp"
+                android:textColor="@android:color/secondary_text_light"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
+
+            <TextView
+                android:id="@+id/entity_condition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="生存条件"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/primary_text_light"/>
+
+            <TextView
+                android:id="@+id/entity_condition_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/entity_condition"
+                android:layout_marginLeft="10dp"
+                android:text="活的宿主细胞"
+                android:textSize="14sp"
+                android:textColor="@android:color/secondary_text_light"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
+
+            <TextView
+                android:id="@+id/entity_spread"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="传播方式"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/primary_text_light"/>
+
+            <TextView
+                android:id="@+id/entity_spread_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/entity_spread"
+                android:layout_marginLeft="10dp"
+                android:text="感染"
+                android:textSize="14sp"
+                android:textColor="@android:color/secondary_text_light"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
+
+            <TextView
+                android:id="@+id/entity_application"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="应用"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/primary_text_light"/>
+
+            <TextView
+                android:id="@+id/entity_application_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/entity_application"
+                android:layout_marginLeft="10dp"
+                android:text="疫苗、细胞工程、基因工程"
+                android:textSize="14sp"
+                android:textColor="@android:color/secondary_text_light"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
