@@ -18,5 +18,10 @@
     <string name="intro_search_kg">大规模、结构化新冠知识图谱(COKG-19)，包含了505个概念、393个属性、26282个实例和32352个知识三元组，覆盖了医疗、健康、物资、防控、科研和人物等。</string>
     <string name="title_relation">关系</string>
     <string name="title_property">属性</string>
+    <string name="share">分享</string>
+    <string name="share_wx">分享到微信</string>
+    <string name="share_qq">分享到QQ</string>
+    <string name="news_history">新闻查看记录</string>
+    <string name="news_clear">清空历史列表</string>
 
 </resources>

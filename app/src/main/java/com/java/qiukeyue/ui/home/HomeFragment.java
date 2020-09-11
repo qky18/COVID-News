@@ -8,42 +8,37 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.java.qiukeyue.CategoryActivity;
+import com.java.qiukeyue.MainActivity;
 import com.java.qiukeyue.R;
 import com.java.qiukeyue.adapter.HomePagerAdapter;
+import com.java.qiukeyue.ui.scholar.ScholarViewModel;
+import com.java.qiukeyue.utils.TabViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
-    private ArrayList<String> category;
-    private ArrayList<String> delCategory;
+    private TabViewModel tabViewModel;
+    private HomePagerAdapter homePagerAdapter;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        category = new ArrayList<>();
-        delCategory = new ArrayList<>();
-        category.add("news");
-        category.add("paper");
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
+    public void initView(View view){
         // init Tab view
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         ViewPager viewPager = view.findViewById(R.id.view_pager);
-        if(category.size() > 4){
-            tabLayout.setTabMode (TabLayout.MODE_SCROLLABLE);
-        }
 
         // bind: fragment -> viewPager -> tabLayout
-        assert getFragmentManager() != null;
-        viewPager.setAdapter(new HomePagerAdapter(getFragmentManager(), category));
+        homePagerAdapter = new HomePagerAdapter(getFragmentManager());
+        viewPager.setAdapter(homePagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
         // init drag layout
@@ -51,10 +46,7 @@ public class HomeFragment extends Fragment {
         addTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CategoryActivity.class);
-                intent.putExtra("category", category);
-                intent.putExtra("delCategory", delCategory);
-                startActivity(intent);
+                ((MainActivity) getActivity()).jumpCategory();
             }
         });
     }
@@ -63,6 +55,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        initView(root);
+        tabViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(TabViewModel.class);
+
+        tabViewModel.getCategory().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(@Nullable List<String> s) {
+                homePagerAdapter.setCategory(s);
+            }
+        });
         return root;
     }
 }

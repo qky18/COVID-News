@@ -38,8 +38,7 @@
                     android:layout_height="wrap_content"
                     tools:listitem="@layout/item_entity_relation"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="2"
-                    tools:itemCount="2">
+                    app:spanCount="1">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
@@ -48,7 +47,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/activity_vertical_margin">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

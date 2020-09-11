@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,6 +93,9 @@ public class CategoryActivity extends AppCompatActivity {
         Intent intent = getIntent();
         intent.putExtra("category", (Serializable) mCategory);
         intent.putExtra("delCategory", (Serializable) mDelCategory);
+        for(String s: mCategory){
+            Log.e("CategoryActivity", s);
+        }
         setResult(RESULT_OK, intent);
         finish();
     }
